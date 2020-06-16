@@ -1,0 +1,130 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: SELECT COUNT(1) FROM call_center
+Query submitted at: 2020-06-10 02:18:25 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=ef499ddfb87d5013:4b79b22f00000000
+6
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM catalog_page
+Query submitted at: 2020-06-10 02:18:25 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=14446f446cd1d57b:69ee896d00000000
+11718
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM catalog_returns
+Query submitted at: 2020-06-10 02:18:25 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=f24248847cb56f4d:13ccabe000000000
+144067
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM catalog_sales
+Query submitted at: 2020-06-10 02:18:25 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=914b0d4ffaf7cd84:4920e33100000000
+1441548
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM customer
+Query submitted at: 2020-06-10 02:18:25 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=7446ef6a8536b60a:c91445d600000000
+100000
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM customer_address
+Query submitted at: 2020-06-10 02:18:25 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=874e655592eea405:a239c21b00000000
+50000
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM customer_demographics
+Query submitted at: 2020-06-10 02:18:26 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=524395ddd4e805b3:6858fd1200000000
+1920800
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM date_dim
+Query submitted at: 2020-06-10 02:18:26 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=9243dc4122c76aa8:df71004a00000000
+73049
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM dbgen_version
+Query submitted at: 2020-06-10 02:18:26 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=f2493e0db7455c50:4ca140fa00000000
+1
+Fetched 1 row(s) in 0.12s
+Query: SELECT COUNT(1) FROM household_demographics
+Query submitted at: 2020-06-10 02:18:26 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=b1436dc1296c4012:006c7a6b00000000
+7200
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM income_band
+Query submitted at: 2020-06-10 02:18:26 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=e441a313388c4ff9:afb0125a00000000
+20
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM inventory
+Query submitted at: 2020-06-10 02:18:26 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=e14200499c6bf103:4f89049000000000
+11745000
+Fetched 1 row(s) in 0.21s
+Query: SELECT COUNT(1) FROM item
+Query submitted at: 2020-06-10 02:18:26 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=924b8430894c3270:16b50a6300000000
+18000
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM promotion
+Query submitted at: 2020-06-10 02:18:26 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=5240d3dae875aac8:b83a612b00000000
+300
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM reason
+Query submitted at: 2020-06-10 02:18:27 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=b44f870a67a1fb6d:086c34f800000000
+35
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM ship_mode
+Query submitted at: 2020-06-10 02:18:27 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=3e456425ddf98474:81d889f300000000
+20
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM store
+Query submitted at: 2020-06-10 02:18:27 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=db47b95da2d24734:904639f200000000
+12
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM store_returns
+Query submitted at: 2020-06-10 02:18:27 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=90407f26a3f73c6a:08f9e2fe00000000
+287514
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM store_sales
+Query submitted at: 2020-06-10 02:18:27 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=32445fbac5e24a36:af6607b100000000
+2880404
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM time_dim
+Query submitted at: 2020-06-10 02:18:27 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=86405a73eca16f28:e3c1719a00000000
+86400
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM warehouse
+Query submitted at: 2020-06-10 02:18:27 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=c5475c77b8c45a87:a521733100000000
+5
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM web_page
+Query submitted at: 2020-06-10 02:18:27 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=cc422d61c86c2fc5:34717e1c00000000
+60
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM web_returns
+Query submitted at: 2020-06-10 02:18:28 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=9d457794dd385ca0:b8bdbc8800000000
+71763
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM web_sales
+Query submitted at: 2020-06-10 02:18:28 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=2a46933eda119119:5fd9bff900000000
+719384
+Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM web_site
+Query submitted at: 2020-06-10 02:18:28 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=ad439497f91a6fcd:bb6044fc00000000
+30
+Fetched 1 row(s) in 0.11s

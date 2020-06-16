@@ -1,0 +1,134 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: select i_brand_id brand_id, i_brand brand, i_manufact_id, i_manufact,
+sum(ss_ext_sales_price) ext_price
+from date_dim, store_sales, item,customer,customer_address,store
+where d_date_sk = ss_sold_date_sk
+and ss_item_sk = i_item_sk
+and i_manager_id=8
+and d_moy=11
+and d_year=1999
+and ss_customer_sk = c_customer_sk
+and c_current_addr_sk = ca_address_sk
+and substr(ca_zip,1,5) <> substr(s_zip,1,5)
+and ss_store_sk = s_store_sk
+group by i_brand
+,i_brand_id
+,i_manufact_id
+,i_manufact
+order by ext_price desc
+,i_brand
+,i_brand_id
+,i_manufact_id
+,i_manufact
+limit 100
+Query submitted at: 2020-06-10 02:22:20 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=fa4a4349eb1495bd:6348046800000000
++----------+----------------------------------------------------+---------------+----------------------------------------------------+-----------+
+| brand_id | brand                                              | i_manufact_id | i_manufact                                         | ext_price |
++----------+----------------------------------------------------+---------------+----------------------------------------------------+-----------+
+| 5001002  | amalgscholar #2                                    | 124           | eseableought                                       | 60599.51  |
+| 9013005  | exportiunivamalg #5                                | 362           | ablecallypri                                       | 56623.61  |
+| 1004001  | edu packamalg #1                                   | 507           | ationbaranti                                       | 48684.15  |
+| 10012006 | importoamalgamalg #6                               | 162           | ablecallyought                                     | 45553.04  |
+| 4004001  | edu packedu pack #1                                | 257           | ationantiable                                      | 43243.34  |
+| 2004001  | edu packimporto #1                                 | 584           | eseeinganti                                        | 38941.98  |
+| 2002001  | importoimporto #1                                  | 525           | antiableanti                                       | 34269.30  |
+| 4001001  | amalgedu pack #1                                   | 236           | callypriable                                       | 34158.86  |
+| 9005011  | scholarmaxi #11                                    | 349           | n stesepri                                         | 33263.83  |
+| 4001001  | amalgedu pack #1                                   | 379           | n stationpri                                       | 32585.02  |
+| 1002002  | importoamalg #2                                    | 50            | baranti                                            | 32179.58  |
+| 1002001  | importoamalg #1                                    | 184           | eseeingought                                       | 31766.79  |
+| 4003001  | exportiedu pack #1                                 | 659           | n stantically                                      | 31180.48  |
+| 8009002  | maxinameless #2                                    | 558           | eingantianti                                       | 30680.39  |
+| 10008005 | namelessunivamalg #5                               | 813           | prioughteing                                       | 29793.05  |
+| 3001001  | amalgexporti #1                                    | 24            | eseable                                            | 29421.81  |
+| 9012003  | importounivamalg #3                                | 818           | eingoughteing                                      | 28668.11  |
+| 10013006 | exportiamalgamalg #6                               | 461           | oughtcallyese                                      | 28651.48  |
+| 9011008  | amalgunivamalg #8                                  | 93            | prin st                                            | 28642.70  |
+| 5003001  | exportischolar #1                                  | 264           | esecallyable                                       | 28519.93  |
+| 2002001  | importoimporto #1                                  | 134           | esepriought                                        | 28445.90  |
+| 6009005  | maxicorp #5                                        | 619           | n stoughtcally                                     | 28218.65  |
+| 4003002  | exportiedu pack #2                                 | 117           | ationoughtought                                    | 28047.76  |
+| 3004001  | edu packexporti #1                                 | 119           | n stoughtought                                     | 27984.30  |
+| 3002001  | importoexporti #1                                  | 605           | antibarcally                                       | 27543.33  |
+| 5002002  | importoscholar #2                                  | 245           | antieseable                                        | 27208.84  |
+| 8007009  | brandnameless #9                                   | 34            | esepri                                             | 26915.93  |
+| 6013004  | exportibrand #4                                    | 520           | barableanti                                        | 26914.53  |
+| 9004011  | edu packmaxi #11                                   | 241           | oughteseable                                       | 26887.66  |
+| 6011004  | amalgbrand #4                                      | 9             | n st                                               | 26684.52  |
+| 2004001  | edu packimporto #1                                 | 289           | n steingable                                       | 26662.05  |
+| 2003001  | exportiimporto #1                                  | 653           | priantically                                       | 26235.95  |
+| 8003007  | exportinameless #7                                 | 85            | antieing                                           | 25956.01  |
+| 3001002  | amalgexporti #2                                    | 448           | eingeseese                                         | 25519.10  |
+| 10001014 | amalgunivamalg #14                                 | 207           | ationbarable                                       | 25452.33  |
+| 10006012 | corpunivamalg #12                                  | 166           | callycallyought                                    | 25330.51  |
+| 9009011  | maximaxi #11                                       | 117           | ationoughtought                                    | 25230.63  |
+| 9002011  | importomaxi #11                                    | 606           | callybarcally                                      | 24908.86  |
+| 5004001  | edu packscholar #1                                 | 303           | pribarpri                                          | 24594.65  |
+| 1003002  | exportiamalg #2                                    | 400           | barbarese                                          | 23355.49  |
+| 9016003  | corpunivamalg #3                                   | 51            | oughtanti                                          | 23167.42  |
+| 8011003  | amalgmaxi #3                                       | 683           | prieingcally                                       | 22998.91  |
+| 4003002  | exportiedu pack #2                                 | 357           | ationantipri                                       | 22929.60  |
+| 6009001  | maxicorp #1                                        | 66            | callycally                                         | 22731.00  |
+| 1002001  | importoamalg #1                                    | 743           | prieseation                                        | 22378.08  |
+| 10011002 | amalgamalgamalg #2                                 | 112           | ableoughtought                                     | 22328.35  |
+| 8005009  | scholarnameless #9                                 | 323           | priablepri                                         | 22309.60  |
+| 1003001  | exportiamalg #1                                    | 162           | ablecallyought                                     | 22157.96  |
+| 8003003  | exportinameless #3                                 | 85            | antieing                                           | 21486.09  |
+| 4004001  | edu packedu pack #1                                | 718           | eingoughtation                                     | 21109.09  |
+| 10003001 | exportiunivamalg #1                                | 252           | ableantiable                                       | 20521.78  |
+| 1003002  | exportiamalg #2                                    | 483           | prieingese                                         | 20442.57  |
+| 10007007 | brandunivamalg #7                                  | 190           | barn stought                                       | 20381.45  |
+| 7014001  | edu packnameless #1                                | 23            | priable                                            | 20180.42  |
+| 5002001  | importoscholar #1                                  | 202           | ablebarable                                        | 20155.61  |
+| 9004003  | edu packmaxi #3                                    | 191           | oughtn stought                                     | 20037.92  |
+| 5002001  | importoscholar #1                                  | 442           | ableeseese                                         | 20006.02  |
+| 8014007  | edu packmaxi #7                                    | 350           | barantipri                                         | 19925.31  |
+| 3002002  | importoexporti #2                                  | 597           | ationn stanti                                      | 19828.78  |
+| 3002001  | importoexporti #1                                  | 462           | ablecallyese                                       | 19342.72  |
+| 5003002  | exportischolar #2                                  | 162           | ablecallyought                                     | 19209.09  |
+| 2002001  | importoimporto #1                                  | 100           | barbarought                                        | 19042.42  |
+| 1004001  | edu packamalg #1                                   | 675           | antiationcally                                     | 19030.48  |
+| 2003001  | exportiimporto #1                                  | 288           | eingeingable                                       | 18685.69  |
+| 10015008 | scholaramalgamalg #8                               | 839           | n stprieing                                        | 18534.54  |
+| 1001001  | amalgamalg #1                                      | 346           | callyesepri                                        | 18433.11  |
+| 6015001  | scholarbrand #1                                    | 543           | prieseanti                                         | 18364.76  |
+| 10011013 | amalgamalgamalg #13                                | 551           | oughtantianti                                      | 18064.77  |
+| 5003001  | exportischolar #1                                  | 457           | ationantiese                                       | 17728.94  |
+| 8012001  | importomaxi #1                                     | 277           | ationationable                                     | 17605.55  |
+| 10010013 | univamalgamalg #13                                 | 656           | callyantically                                     | 17471.71  |
+| 10006011 | corpunivamalg #11                                  | 328           | eingablepri                                        | 17466.17  |
+| 8012007  | importomaxi #7                                     | 320           | barablepri                                         | 17382.18  |
+| 4002002  | importoedu pack #2                                 | 615           | antioughtcally                                     | 17354.10  |
+| 5003001  | exportischolar #1                                  | 306           | callybarpri                                        | 17349.23  |
+| 4004001  | edu packedu pack #1                                | 286           | callyeingable                                      | 17062.06  |
+| 7005004  | scholarbrand #4                                    | 641           | oughtesecally                                      | 16975.05  |
+| 6006004  | corpcorp #4                                        | 27            | ationable                                          | 16817.59  |
+| 8014009  | edu packmaxi #9                                    | 214           | eseoughtable                                       | 16588.51  |
+| 4004002  | edu packedu pack #2                                | 293           | prin stable                                        | 16426.34  |
+| 5004002  | edu packscholar #2                                 | 168           | eingcallyought                                     | 16291.22  |
+| 1002002  | importoamalg #2                                    | 504           | esebaranti                                         | 16252.61  |
+| 4002001  | importoedu pack #1                                 | 101           | oughtbarought                                      | 16134.60  |
+| 7001007  | amalgbrand #7                                      | 39            | n stpri                                            | 15797.42  |
+| 5002002  | importoscholar #2                                  | 503           | pribaranti                                         | 15627.77  |
+| 1003001  | exportiamalg #1                                    | 377           | ationationpri                                      | 15582.50  |
+| 4001002  | amalgedu pack #2                                   | 149           | n steseought                                       | 15402.78  |
+| 6010003  | univbrand #3                                       | 165           | anticallyought                                     | 15354.23  |
+| 2002001  | importoimporto #1                                  | 265           | anticallyable                                      | 15075.73  |
+| 1004001  | edu packamalg #1                                   | 380           | bareingpri                                         | 14925.12  |
+| 8002004  | importonameless #4                                 | 764           | esecallyation                                      | 14783.49  |
+| 5004002  | edu packscholar #2                                 | 427           | ationableese                                       | 14687.36  |
+| 3002002  | importoexporti #2                                  | 581           | oughteinganti                                      | 14596.06  |
+| 3002001  | importoexporti #1                                  | 176           | callyationought                                    | 14368.19  |
+| 10016002 | corpamalgamalg #2                                  | 512           | ableoughtanti                                      | 14128.65  |
+| 9007011  | brandmaxi #11                                      | 238           | eingpriable                                        | 14013.00  |
+| 7002009  | importobrand #9                                    | 39            | n stpri                                            | 13990.52  |
+| 2004002  | edu packimporto #2                                 | 912           | ableoughtn st                                      | 13897.89  |
+| 1001001  | amalgamalg #1                                      | 89            | n steing                                           | 13737.65  |
+| 8006008  | corpnameless #8                                    | 605           | antibarcally                                       | 13650.38  |
++----------+----------------------------------------------------+---------------+----------------------------------------------------+-----------+
+Fetched 100 row(s) in 0.79s

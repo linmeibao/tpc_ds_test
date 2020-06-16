@@ -1,0 +1,79 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: select dt.d_year
+,item.i_brand_id brand_id
+,item.i_brand brand
+,sum(ss_net_profit) sum_agg
+from  date_dim dt
+,store_sales
+,item
+where dt.d_date_sk = store_sales.ss_sold_date_sk
+and store_sales.ss_item_sk = item.i_item_sk
+and item.i_manufact_id = 445
+and dt.d_moy=12
+group by dt.d_year
+,item.i_brand
+,item.i_brand_id
+order by dt.d_year
+,sum_agg desc
+,brand_id
+limit 100
+Query submitted at: 2020-06-10 02:21:29 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=4b4200c6f58e8472:579bcae300000000
++--------+----------+----------------------------------------------------+-----------+
+| d_year | brand_id | brand                                              | sum_agg   |
++--------+----------+----------------------------------------------------+-----------+
+| 1998   | 7003004  | exportibrand #4                                    | -1445.10  |
+| 1998   | 10016001 | corpamalgamalg #1                                  | -2616.31  |
+| 1998   | 1004002  | edu packamalg #2                                   | -2950.32  |
+| 1998   | 3001002  | amalgexporti #2                                    | -4889.11  |
+| 1998   | 3003001  | exportiexporti #1                                  | -6844.08  |
+| 1998   | 3004001  | edu packexporti #1                                 | -7210.76  |
+| 1998   | 5004001  | edu packscholar #1                                 | -10021.47 |
+| 1998   | 8001003  | amalgnameless #3                                   | -20569.07 |
+| 1999   | 5004001  | edu packscholar #1                                 | -745.07   |
+| 1999   | 3004001  | edu packexporti #1                                 | -3250.66  |
+| 1999   | 7003004  | exportibrand #4                                    | -6429.51  |
+| 1999   | 1004002  | edu packamalg #2                                   | -9755.51  |
+| 1999   | 3001002  | amalgexporti #2                                    | -12837.17 |
+| 1999   | 8001003  | amalgnameless #3                                   | -14349.55 |
+| 1999   | 3003001  | exportiexporti #1                                  | -14530.57 |
+| 1999   | 10016001 | corpamalgamalg #1                                  | -15887.58 |
+| 2000   | 7003004  | exportibrand #4                                    | -3509.47  |
+| 2000   | 3003001  | amalgnameless #8                                   | -6513.14  |
+| 2000   | 1004002  | edu packamalg #2                                   | -8355.89  |
+| 2000   | 10016001 | corpamalgamalg #1                                  | -8553.77  |
+| 2000   | 2002002  | importoimporto #2                                  | -10407.73 |
+| 2000   | 9014012  | edu packunivamalg #12                              | -10796.83 |
+| 2000   | 10010011 | univamalgamalg #11                                 | -11024.36 |
+| 2000   | 3001002  | amalgexporti #2                                    | -11308.01 |
+| 2000   | 3004001  | edu packbrand #6                                   | -19351.32 |
+| 2000   | 6014004  | edu packbrand #4                                   | -22541.53 |
+| 2001   | 1004002  | edu packamalg #2                                   | -251.41   |
+| 2001   | 10010011 | univamalgamalg #11                                 | -798.85   |
+| 2001   | 7003004  | exportibrand #4                                    | -2767.73  |
+| 2001   | 6014004  | edu packbrand #4                                   | -4183.45  |
+| 2001   | 3004001  | edu packbrand #6                                   | -4880.37  |
+| 2001   | 2002002  | importoimporto #2                                  | -8303.72  |
+| 2001   | 3004001  | importoamalg #2                                    | -8685.38  |
+| 2001   | 7015008  | scholarnameless #8                                 | -9060.77  |
+| 2001   | 3001002  | amalgexporti #2                                    | -9295.94  |
+| 2001   | 4003001  | importoamalg #2                                    | -12790.03 |
+| 2001   | 3003001  | amalgnameless #8                                   | -13581.01 |
+| 2001   | 9014012  | edu packunivamalg #12                              | -19364.17 |
+| 2002   | 7003004  | exportibrand #4                                    | 5416.08   |
+| 2002   | 7013001  | exportinameless #1                                 | -2825.31  |
+| 2002   | 2003001  | exportiimporto #1                                  | -3109.92  |
+| 2002   | 1004002  | edu packamalg #2                                   | -5148.02  |
+| 2002   | 3004001  | importoamalg #2                                    | -6022.68  |
+| 2002   | 4003001  | importoamalg #2                                    | -8266.85  |
+| 2002   | 7015008  | scholarnameless #8                                 | -10841.54 |
+| 2002   | 4001001  | amalgedu pack #1                                   | -11798.98 |
+| 2002   | 3001002  | amalgexporti #2                                    | -12686.40 |
+| 2002   | 1002001  | importoamalg #1                                    | -14362.34 |
+| 2002   | 10013015 | exportiamalgamalg #15                              | -15218.40 |
++--------+----------+----------------------------------------------------+-----------+
+Fetched 49 row(s) in 0.55s

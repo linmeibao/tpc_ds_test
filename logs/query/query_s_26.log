@@ -1,0 +1,160 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: with v1 as(
+select i_category, i_brand,
+s_store_name, s_company_name,
+d_year, d_moy,
+sum(ss_sales_price) sum_sales,
+avg(sum(ss_sales_price)) over
+(partition by i_category, i_brand,
+s_store_name, s_company_name, d_year)
+avg_monthly_sales,
+rank() over
+(partition by i_category, i_brand,
+s_store_name, s_company_name
+order by d_year, d_moy) rn
+from item, store_sales, date_dim, store
+where ss_item_sk = i_item_sk and
+ss_sold_date_sk = d_date_sk and
+ss_store_sk = s_store_sk and
+(
+d_year = 2001 or
+( d_year = 2001-1 and d_moy =12) or
+( d_year = 2001+1 and d_moy =1)
+)
+group by i_category, i_brand,
+s_store_name, s_company_name,
+d_year, d_moy),
+v2 as(
+select v1.i_category, v1.i_brand, v1.s_store_name, v1.s_company_name
+,v1.d_year
+,v1.avg_monthly_sales
+,v1.sum_sales, v1_lag.sum_sales psum, v1_lead.sum_sales nsum
+from v1, v1 v1_lag, v1 v1_lead
+where v1.i_category = v1_lag.i_category and
+v1.i_category = v1_lead.i_category and
+v1.i_brand = v1_lag.i_brand and
+v1.i_brand = v1_lead.i_brand and
+v1.s_store_name = v1_lag.s_store_name and
+v1.s_store_name = v1_lead.s_store_name and
+v1.s_company_name = v1_lag.s_company_name and
+v1.s_company_name = v1_lead.s_company_name and
+v1.rn = v1_lag.rn + 1 and
+v1.rn = v1_lead.rn - 1)
+select  *
+from v2
+where  d_year = 2001 and
+avg_monthly_sales > 0 and
+case when avg_monthly_sales > 0 then abs(sum_sales - avg_monthly_sales) / avg_monthly_sales else null end > 0.1
+order by sum_sales - avg_monthly_sales, nsum
+limit 100
+Query submitted at: 2020-06-10 02:21:27 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=2f47228fdd788f97:70b12db200000000
++----------------------------------------------------+----------------------------------------------------+--------------+----------------+--------+-------------------+-----------+----------+----------+
+| i_category                                         | i_brand                                            | s_store_name | s_company_name | d_year | avg_monthly_sales | sum_sales | psum     | nsum     |
++----------------------------------------------------+----------------------------------------------------+--------------+----------------+--------+-------------------+-----------+----------+----------+
+| Music                                              | edu packscholar #2                                 | able         | Unknown        | 2001   | 7894.402500       | 3161.66   | 5507.40  | 4280.54  |
+| Music                                              | importoscholar #2                                  | ought        | Unknown        | 2001   | 7774.914167       | 3044.90   | 3849.96  | 4877.26  |
+| Music                                              | edu packscholar #2                                 | ese          | Unknown        | 2001   | 7686.789167       | 2977.05   | 4673.74  | 4727.07  |
+| Shoes                                              | importoedu pack #2                                 | able         | Unknown        | 2001   | 7514.614167       | 3013.23   | 4545.42  | 3886.42  |
+| Men                                                | importoimporto #2                                  | eing         | Unknown        | 2001   | 8069.435000       | 3635.10   | 4752.58  | 4883.99  |
+| Women                                              | importoamalg #2                                    | able         | Unknown        | 2001   | 7404.984167       | 2973.04   | 4239.94  | 3561.37  |
+| Women                                              | amalgamalg #2                                      | ese          | Unknown        | 2001   | 6951.338333       | 2569.75   | 3712.24  | 4605.79  |
+| Men                                                | importoimporto #2                                  | ese          | Unknown        | 2001   | 7725.031667       | 3356.95   | 3925.21  | 3808.45  |
+| Women                                              | edu packamalg #2                                   | ation        | Unknown        | 2001   | 7175.003333       | 2890.41   | 5079.12  | 4690.66  |
+| Shoes                                              | importoedu pack #2                                 | ought        | Unknown        | 2001   | 7416.935000       | 3133.22   | 3385.04  | 4203.39  |
+| Shoes                                              | exportiedu pack #2                                 | ese          | Unknown        | 2001   | 6852.033333       | 2576.52   | 3555.42  | 3534.31  |
+| Women                                              | amalgamalg #2                                      | able         | Unknown        | 2001   | 6766.400000       | 2491.56   | 4850.74  | 5249.49  |
+| Children                                           | exportiexporti #2                                  | ought        | Unknown        | 2001   | 6590.180833       | 2344.27   | 4281.39  | 4953.66  |
+| Music                                              | importoscholar #2                                  | ation        | Unknown        | 2001   | 7695.773333       | 3463.88   | 4684.62  | 4220.58  |
+| Shoes                                              | edu packedu pack #2                                | eing         | Unknown        | 2001   | 7242.133333       | 3029.61   | 6033.59  | 5009.46  |
+| Music                                              | importoscholar #2                                  | able         | Unknown        | 2001   | 7436.496667       | 3239.62   | 5139.90  | 4156.94  |
+| Music                                              | edu packscholar #2                                 | able         | Unknown        | 2001   | 7894.402500       | 3697.90   | 5830.46  | 5644.92  |
+| Music                                              | importoscholar #2                                  | bar          | Unknown        | 2001   | 7285.071667       | 3119.42   | 5003.33  | 3593.37  |
+| Shoes                                              | importoedu pack #2                                 | able         | Unknown        | 2001   | 7514.614167       | 3430.23   | 4648.60  | 3834.48  |
+| Music                                              | importoscholar #2                                  | ese          | Unknown        | 2001   | 8206.971667       | 4133.71   | 4649.89  | 6186.41  |
+| Children                                           | amalgexporti #2                                    | ought        | Unknown        | 2001   | 6778.269167       | 2716.06   | 3735.28  | 4601.82  |
+| Music                                              | exportischolar #2                                  | ation        | Unknown        | 2001   | 7357.230000       | 3301.41   | 3831.10  | 5798.57  |
+| Men                                                | importoimporto #2                                  | able         | Unknown        | 2001   | 7501.834167       | 3453.49   | 4783.80  | 3696.95  |
+| Shoes                                              | importoedu pack #2                                 | ought        | Unknown        | 2001   | 7416.935000       | 3385.04   | 3721.94  | 3133.22  |
+| Men                                                | exportiimporto #2                                  | ought        | Unknown        | 2001   | 6704.539167       | 2678.97   | 3598.85  | 3830.69  |
+| Music                                              | edu packscholar #2                                 | ought        | Unknown        | 2001   | 7478.525000       | 3473.83   | 3843.36  | 3994.36  |
+| Shoes                                              | importoedu pack #2                                 | ese          | Unknown        | 2001   | 7768.380833       | 3772.20   | 4636.21  | 4796.45  |
+| Women                                              | importoamalg #2                                    | able         | Unknown        | 2001   | 7404.984167       | 3420.51   | 4890.03  | 4239.94  |
+| Men                                                | amalgimporto #2                                    | able         | Unknown        | 2001   | 6661.096667       | 2679.38   | 2860.40  | 4736.97  |
+| Shoes                                              | importoedu pack #2                                 | bar          | Unknown        | 2001   | 7561.020000       | 3582.44   | 4870.09  | 9642.92  |
+| Music                                              | amalgscholar #2                                    | ese          | Unknown        | 2001   | 6465.499167       | 2512.87   | 3022.86  | 3756.23  |
+| Women                                              | importoamalg #2                                    | eing         | Unknown        | 2001   | 7771.314167       | 3824.58   | 4929.02  | 5128.38  |
+| Women                                              | importoamalg #2                                    | bar          | Unknown        | 2001   | 7267.165000       | 3320.62   | 4549.77  | 4168.33  |
+| Shoes                                              | edu packedu pack #2                                | eing         | Unknown        | 2001   | 7242.133333       | 3299.90   | 3640.94  | 3768.08  |
+| Music                                              | importoscholar #2                                  | ought        | Unknown        | 2001   | 7774.914167       | 3849.96   | 4251.90  | 3044.90  |
+| Men                                                | importoimporto #2                                  | ese          | Unknown        | 2001   | 7725.031667       | 3808.45   | 3356.95  | 4611.19  |
+| Men                                                | amalgimporto #2                                    | ese          | Unknown        | 2001   | 6689.810833       | 2773.94   | 4618.55  | 3127.08  |
+| Children                                           | edu packexporti #2                                 | eing         | Unknown        | 2001   | 6954.460833       | 3046.94   | 3951.69  | 3740.57  |
+| Music                                              | exportischolar #2                                  | ought        | Unknown        | 2001   | 7047.704167       | 3172.50   | 4114.50  | 4282.43  |
+| Music                                              | importoscholar #2                                  | eing         | Unknown        | 2001   | 7924.283333       | 4049.18   | 5951.55  | 5412.84  |
+| Shoes                                              | amalgedu pack #2                                   | bar          | Unknown        | 2001   | 7129.995833       | 3255.61   | 8715.54  | 3474.82  |
+| Music                                              | exportischolar #2                                  | ese          | Unknown        | 2001   | 7163.575833       | 3314.96   | 9618.75  | 3427.61  |
+| Women                                              | importoamalg #2                                    | able         | Unknown        | 2001   | 7404.984167       | 3561.37   | 2973.04  | 4209.54  |
+| Men                                                | amalgimporto #2                                    | ation        | Unknown        | 2001   | 6810.833333       | 2969.77   | 4139.19  | 5723.97  |
+| Music                                              | importoscholar #2                                  | ese          | Unknown        | 2001   | 8206.971667       | 4378.02   | 4735.32  | 6029.71  |
+| Music                                              | importoscholar #2                                  | ation        | Unknown        | 2001   | 7695.773333       | 3874.88   | 4082.25  | 10384.05 |
+| Women                                              | exportiamalg #2                                    | ation        | Unknown        | 2001   | 6611.577500       | 2792.14   | 3111.26  | 2893.18  |
+| Men                                                | importoimporto #2                                  | bar          | Unknown        | 2001   | 7583.101667       | 3776.33   | 5351.13  | 4318.89  |
+| Men                                                | importoimporto #2                                  | able         | Unknown        | 2001   | 7501.834167       | 3696.95   | 3453.49  | 6487.98  |
+| Men                                                | amalgimporto #2                                    | able         | Unknown        | 2001   | 6661.096667       | 2860.40   | 5546.74  | 2679.38  |
+| Men                                                | importoimporto #2                                  | ese          | Unknown        | 2001   | 7725.031667       | 3925.21   | 4110.62  | 3356.95  |
+| Men                                                | importoimporto #2                                  | ation        | Unknown        | 2001   | 7823.974167       | 4030.67   | 4981.42  | 4226.44  |
+| Shoes                                              | amalgedu pack #2                                   | eing         | Unknown        | 2001   | 7079.071667       | 3288.54   | 4214.02  | 4065.33  |
+| Men                                                | importoimporto #2                                  | ese          | Unknown        | 2001   | 7725.031667       | 3966.28   | 4611.19  | 4591.73  |
+| Music                                              | edu packscholar #2                                 | ese          | Unknown        | 2001   | 7686.789167       | 3934.84   | 4300.35  | 10296.26 |
+| Music                                              | edu packscholar #2                                 | ation        | Unknown        | 2001   | 7481.034167       | 3737.74   | 4301.59  | 4579.85  |
+| Music                                              | edu packscholar #2                                 | ation        | Unknown        | 2001   | 7481.034167       | 3737.86   | 4251.91  | 4301.59  |
+| Children                                           | exportiexporti #2                                  | ation        | Unknown        | 2001   | 6583.615000       | 2845.79   | 3265.38  | 4598.57  |
+| Music                                              | exportischolar #2                                  | ese          | Unknown        | 2001   | 7163.575833       | 3427.61   | 3314.96  | 4594.85  |
+| Shoes                                              | exportiedu pack #2                                 | ought        | Unknown        | 2001   | 6894.225000       | 3175.71   | 4407.95  | 4183.20  |
+| Women                                              | exportiamalg #2                                    | ation        | Unknown        | 2001   | 6611.577500       | 2893.18   | 2792.14  | 4043.82  |
+| Men                                                | importoimporto #2                                  | ought        | Unknown        | 2001   | 7471.690833       | 3754.54   | 4487.47  | 5002.61  |
+| Children                                           | importoexporti #2                                  | ought        | Unknown        | 2001   | 6572.165833       | 2856.15   | 4597.03  | 3632.16  |
+| Men                                                | exportiimporto #2                                  | eing         | Unknown        | 2001   | 7022.575000       | 3319.34   | 5585.36  | 4270.78  |
+| Shoes                                              | importoedu pack #2                                 | ought        | Unknown        | 2001   | 7416.935000       | 3721.94   | 9630.30  | 3385.04  |
+| Music                                              | importoscholar #2                                  | bar          | Unknown        | 2001   | 7285.071667       | 3593.37   | 3119.42  | 4866.99  |
+| Men                                                | amalgimporto #2                                    | ation        | Unknown        | 2001   | 6810.833333       | 3126.80   | 4133.29  | 4139.19  |
+| Shoes                                              | importoedu pack #2                                 | able         | Unknown        | 2001   | 7514.614167       | 3834.48   | 3430.23  | 4220.18  |
+| Women                                              | edu packamalg #2                                   | ation        | Unknown        | 2001   | 7175.003333       | 3498.61   | 4156.10  | 3945.26  |
+| Men                                                | exportiimporto #2                                  | eing         | Unknown        | 2001   | 7022.575000       | 3349.29   | 4270.78  | 3633.60  |
+| Children                                           | importoexporti #2                                  | able         | Unknown        | 2001   | 6870.858333       | 3209.98   | 4790.43  | 4357.86  |
+| Shoes                                              | exportiedu pack #2                                 | able         | Unknown        | 2001   | 6703.474167       | 3043.44   | 5063.04  | 3666.18  |
+| Women                                              | importoamalg #2                                    | ation        | Unknown        | 2001   | 7431.364167       | 3772.30   | 3992.52  | 4597.85  |
+| Shoes                                              | amalgedu pack #2                                   | bar          | Unknown        | 2001   | 7129.995833       | 3474.82   | 3255.61  | 4006.25  |
+| Children                                           | edu packexporti #2                                 | ese          | Unknown        | 2001   | 7020.620000       | 3365.94   | 3960.68  | 5054.74  |
+| Music                                              | edu packscholar #2                                 | eing         | Unknown        | 2001   | 7758.403333       | 4107.00   | 5067.61  | 4467.52  |
+| Shoes                                              | exportiedu pack #2                                 | eing         | Unknown        | 2001   | 6719.697500       | 3070.06   | 3998.11  | 4309.88  |
+| Women                                              | amalgamalg #2                                      | ese          | Unknown        | 2001   | 6951.338333       | 3303.92   | 8736.00  | 3712.24  |
+| Children                                           | importoexporti #2                                  | ation        | Unknown        | 2001   | 6789.123333       | 3145.09   | 3764.33  | 3846.75  |
+| Men                                                | amalgimporto #2                                    | ought        | Unknown        | 2001   | 6797.204167       | 3154.67   | 3797.66  | 3836.58  |
+| Music                                              | edu packscholar #2                                 | ought        | Unknown        | 2001   | 7478.525000       | 3843.36   | 5515.60  | 3473.83  |
+| Music                                              | exportischolar #2                                  | ation        | Unknown        | 2001   | 7357.230000       | 3724.00   | 10889.71 | 4209.58  |
+| Children                                           | edu packexporti #2                                 | able         | Unknown        | 2001   | 6854.826667       | 3224.24   | 3968.66  | 3320.38  |
+| Shoes                                              | edu packedu pack #2                                | bar          | Unknown        | 2001   | 6674.948333       | 3046.37   | 3819.02  | 3971.06  |
+| Shoes                                              | importoedu pack #2                                 | able         | Unknown        | 2001   | 7514.614167       | 3886.42   | 3013.23  | 4648.60  |
+| Children                                           | amalgexporti #2                                    | able         | Unknown        | 2001   | 7186.846667       | 3561.94   | 4396.59  | 4738.60  |
+| Children                                           | exportiexporti #2                                  | ought        | Unknown        | 2001   | 6590.180833       | 2971.65   | 3753.26  | 4198.04  |
+| Men                                                | importoimporto #2                                  | ese          | Unknown        | 2001   | 7725.031667       | 4110.62   | 9824.72  | 3925.21  |
+| Men                                                | importoimporto #2                                  | eing         | Unknown        | 2001   | 8069.435000       | 4455.30   | 4883.99  | 4837.43  |
+| Music                                              | edu packscholar #2                                 | able         | Unknown        | 2001   | 7894.402500       | 4280.54   | 3161.66  | 4842.01  |
+| Music                                              | importoscholar #2                                  | ation        | Unknown        | 2001   | 7695.773333       | 4082.25   | 4427.39  | 3874.88  |
+| Women                                              | importoamalg #2                                    | bar          | Unknown        | 2001   | 7267.165000       | 3657.07   | 4204.21  | 4405.94  |
+| Shoes                                              | edu packedu pack #2                                | eing         | Unknown        | 2001   | 7242.133333       | 3640.94   | 4130.48  | 3299.90  |
+| Children                                           | exportiexporti #2                                  | eing         | Unknown        | 2001   | 6452.587500       | 2854.53   | 3382.90  | 4347.24  |
+| Men                                                | importoimporto #2                                  | ation        | Unknown        | 2001   | 7823.974167       | 4226.44   | 4030.67  | 4393.64  |
+| Shoes                                              | edu packedu pack #2                                | able         | Unknown        | 2001   | 7026.070833       | 3431.28   | 4697.35  | 3873.90  |
+| Children                                           | amalgexporti #2                                    | ation        | Unknown        | 2001   | 7328.499167       | 3735.01   | 4014.74  | 4004.89  |
+| Women                                              | edu packamalg #2                                   | eing         | Unknown        | 2001   | 7288.642500       | 3706.58   | 4384.66  | 3791.41  |
+| Music                                              | importoscholar #2                                  | eing         | Unknown        | 2001   | 7924.283333       | 4342.71   | 4869.39  | 4349.16  |
+| Music                                              | importoscholar #2                                  | eing         | Unknown        | 2001   | 7924.283333       | 4349.16   | 4342.71  | 8838.32  |
++----------------------------------------------------+----------------------------------------------------+--------------+----------------+--------+-------------------+-----------+----------+----------+
+Fetched 100 row(s) in 1.46s

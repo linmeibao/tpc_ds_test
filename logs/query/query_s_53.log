@@ -1,0 +1,131 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: select c_last_name,c_first_name,substr(s_city,1,30),ss_ticket_number,amt,profit
+from
+(select ss_ticket_number
+,ss_customer_sk
+,store.s_city
+,sum(ss_coupon_amt) amt
+,sum(ss_net_profit) profit
+from store_sales,date_dim,store,household_demographics
+where store_sales.ss_sold_date_sk = date_dim.d_date_sk
+and store_sales.ss_store_sk = store.s_store_sk
+and store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk
+and (household_demographics.hd_dep_count = 0 or household_demographics.hd_vehicle_count > 4)
+and date_dim.d_dow = 1
+and date_dim.d_year in (1999,1999+1,1999+2)
+and store.s_number_employees between 200 and 295
+group by ss_ticket_number,ss_customer_sk,ss_addr_sk,store.s_city) ms,customer
+where ss_customer_sk = c_customer_sk
+order by c_last_name,c_first_name,substr(s_city,1,30), profit
+limit 100
+Query submitted at: 2020-06-10 02:22:08 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=b54d22c3ccd91ade:5639fc3700000000
++--------------------------------+----------------------+-----------------------+------------------+----------+-----------+
+| c_last_name                    | c_first_name         | substr(s_city, 1, 30) | ss_ticket_number | amt      | profit    |
++--------------------------------+----------------------+-----------------------+------------------+----------+-----------+
+|                                |                      | Fairview              | 173082           | 2592.21  | -34714.29 |
+|                                |                      | Fairview              | 28219            | 1069.69  | -30116.68 |
+|                                |                      | Fairview              | 178545           | 1570.10  | -19899.98 |
+|                                |                      | Fairview              | 167006           | 2257.97  | -13398.38 |
+|                                |                      | Fairview              | 13383            | 2539.19  | -13202.58 |
+|                                |                      | Fairview              | 95167            | 457.93   | -12376.05 |
+|                                |                      | Fairview              | 130281           | 1810.89  | -12298.72 |
+|                                |                      | Fairview              | 25301            | 2497.93  | -3707.03  |
+|                                |                      | Fairview              | 39407            | 247.28   | -1240.35  |
+|                                |                      | Fairview              | 7153             | 9.96     | -984.62   |
+|                                |                      | Fairview              | 13383            | NULL     | NULL      |
+|                                |                      | Midway                | 63731            | 527.98   | -26955.22 |
+|                                |                      | Midway                | 111877           | 6321.51  | -19177.96 |
+|                                |                      | Midway                | 196984           | 7564.76  | -18246.55 |
+|                                |                      | Midway                | 229149           | 92.42    | -16316.52 |
+|                                |                      | Midway                | 185866           | 1172.46  | -12011.29 |
+|                                |                      | Midway                | 27979            | 3118.44  | -11169.87 |
+|                                |                      | Midway                | 44461            | 0.00     | -9796.43  |
+|                                |                      | Midway                | 74663            | 350.51   | -9631.81  |
+|                                |                      | Midway                | 210261           | 1590.93  | -9191.73  |
+|                                |                      | Midway                | 236302           | 0.00     | -8817.08  |
+|                                |                      | Midway                | 148724           | 928.84   | -8741.11  |
+|                                |                      | Midway                | 68560            | 3911.62  | -7050.35  |
+|                                |                      | Midway                | 224378           | 1680.10  | -6723.02  |
+|                                |                      | Midway                | 141816           | 0.00     | -6526.91  |
+|                                |                      | Midway                | 157905           | 2733.35  | -5737.13  |
+|                                |                      | Midway                | 215958           | 2.52     | -5152.58  |
+|                                |                      | Midway                | 81127            | 118.27   | -3356.51  |
+|                                |                      | Midway                | 113867           | 2847.08  | 674.48    |
+|                                |                      | Midway                | 113867           | NULL     | NULL      |
+|                                | Alfredo              | Midway                | 168853           | 2742.44  | -20472.10 |
+|                                | Anna                 | Midway                | 29703            | 1742.53  | -5594.03  |
+|                                | Ashley               | Midway                | 208084           | 3.18     | -15143.27 |
+|                                | Betty                | Fairview              | 59861            | 259.36   | -7673.28  |
+|                                | Carl                 | Fairview              | 233335           | 2337.81  | -7030.26  |
+|                                | Carl                 | Midway                | 97557            | 6188.07  | -20304.64 |
+|                                | Carl                 | Midway                | 97557            | 0.00     | NULL      |
+|                                | Charles              | Midway                | 67613            | 1533.81  | -3013.08  |
+|                                | Claude               | Midway                | 98763            | 11194.93 | -7338.37  |
+|                                | Dorothy              | Fairview              | 21833            | 560.95   | -19763.30 |
+|                                | Elias                | Midway                | 221371           | 1743.02  | -5556.48  |
+|                                | Gary                 | Midway                | 213711           | 2363.63  | -5805.65  |
+|                                | Georgia              | Midway                | 58598            | 130.07   | -15186.69 |
+|                                | Jacqueline           | Midway                | 88812            | 75.56    | -4167.13  |
+|                                | Jerry                | Fairview              | 145904           | 4181.58  | -6060.48  |
+|                                | Jessica              | Midway                | 225692           | 1711.72  | -8175.92  |
+|                                | John                 | Midway                | 185021           | 484.05   | -10033.05 |
+|                                | John                 | Midway                | 179234           | 277.43   | -7605.63  |
+|                                | Kayla                | Midway                | 17991            | 3393.04  | -23315.72 |
+|                                | Laura                | Midway                | 42843            | 231.60   | 2662.77   |
+|                                | Marian               | Midway                | 223631           | 2843.69  | -12084.39 |
+|                                | Melvin               | Midway                | 62096            | 1485.22  | -2397.21  |
+|                                | Michelle             | Midway                | 134351           | 3771.90  | -9709.03  |
+|                                | Monique              | Midway                | 204249           | 8514.24  | -16068.63 |
+|                                | Nancy                | Midway                | 61555            | 74.47    | -5386.51  |
+|                                | Nicolas              | Midway                | 162955           | 3097.18  | -3359.77  |
+|                                | Opal                 | Midway                | 43360            | 37.24    | 5156.46   |
+|                                | Peter                | Midway                | 3683             | 4788.52  | -15953.52 |
+|                                | Raymond              | Midway                | 28086            | 1438.86  | -2232.84  |
+|                                | Rich                 | Midway                | 63233            | 636.83   | -4894.62  |
+|                                | Robert               | Midway                | 145010           | 1205.80  | -7576.70  |
+|                                | Steve                | Fairview              | 32441            | 3117.81  | -2738.85  |
+|                                | Thomas               | Fairview              | 85490            | 2343.80  | -17746.96 |
+|                                | Thomas               | Midway                | 188205           | 4336.67  | -11061.50 |
+|                                | Tina                 | Midway                | 137824           | 399.34   | -6564.72  |
+|                                | Walter               | Midway                | 140181           | 6074.96  | -7042.16  |
+| Abbott                         | Harriet              | Midway                | 111376           | 11356.28 | -16716.92 |
+| Abel                           | Ida                  | Fairview              | 130398           | 1046.14  | -17343.25 |
+| Abrams                         | Fannie               | Midway                | 177397           | 222.18   | -2529.63  |
+| Ackerman                       | Jeffrey              | Midway                | 198943           | 977.78   | -6460.69  |
+| Adams                          | Beth                 | Midway                | 73934            | 2148.45  | -9147.51  |
+| Adams                          | Farrah               | Midway                | 65201            | 795.59   | -7961.47  |
+| Adams                          | Juan                 | Fairview              | 216356           | 3018.49  | -14897.52 |
+| Adams                          | Juan                 | Fairview              | 216356           | NULL     | -2267.74  |
+| Adams                          | Kimberly             | Midway                | 42898            | 4424.69  | -23837.28 |
+| Adams                          | Lashawn              | Fairview              | 3833             | 4228.27  | -10956.01 |
+| Adams                          | Matilde              | Midway                | 3209             | 442.35   | -33527.90 |
+| Adams                          | Michelle             | Midway                | 80058            | 1064.42  | -8713.47  |
+| Adkins                         | Alex                 | Midway                | 183017           | 1501.00  | -10085.44 |
+| Agee                           | Dora                 | Midway                | 217452           | 2097.93  | -7874.59  |
+| Agnew                          | Elizabeth            | Midway                | 14634            | 566.41   | -10311.16 |
+| Alarcon                        | Victoria             | Midway                | 228661           | 459.41   | -3937.68  |
+| Alexander                      |                      | Midway                | 136014           | 998.54   | -11195.87 |
+| Alexander                      | Eddie                | Midway                | 69977            | 0.00     | -9618.25  |
+| Alexander                      | Terry                | Fairview              | 230876           | 703.15   | -7016.10  |
+| Alicea                         | Carrie               | Midway                | 129038           | 2514.95  | -1019.93  |
+| Allen                          |                      | Midway                | 43827            | 844.35   | -7012.34  |
+| Allen                          | Barbara              | Fairview              | 87550            | 6913.59  | -26018.80 |
+| Allen                          | Barbara              | Fairview              | 26817            | 232.07   | -726.48   |
+| Allen                          | Donald               | Midway                | 18622            | 3038.42  | -10480.86 |
+| Allen                          | Earline              | Midway                | 104649           | 1077.64  | -3687.77  |
+| Allen                          | Elaine               | Midway                | 52764            | 638.09   | -24407.79 |
+| Allen                          | Jesus                | Midway                | 96956            | 1257.88  | -5634.22  |
+| Allen                          | Sarah                | Midway                | 208070           | 6618.88  | -14655.41 |
+| Allen                          | Terrence             | Midway                | 64886            | 5241.20  | -8806.85  |
+| Allison                        | Peggie               | Midway                | 146780           | 6966.19  | -7455.22  |
+| Alonso                         | Anthony              | Midway                | 208514           | 4090.00  | -20066.44 |
+| Ames                           | Sarah                | Midway                | 96167            | 2676.38  | -15257.00 |
+| Anderson                       | Bette                | Midway                | 209223           | 1945.79  | -3679.05  |
+| Anderson                       | George               | Midway                | 41081            | 9778.10  | -15470.81 |
++--------------------------------+----------------------+-----------------------+------------------+----------+-----------+
+Fetched 100 row(s) in 1.08s

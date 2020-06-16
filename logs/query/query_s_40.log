@@ -1,0 +1,103 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: select *
+from
+(select count(*) h8_30_to_9
+from store_sales, household_demographics , time_dim, store
+where ss_sold_time_sk = time_dim.t_time_sk
+and ss_hdemo_sk = household_demographics.hd_demo_sk
+and ss_store_sk = s_store_sk
+and time_dim.t_hour = 8
+and time_dim.t_minute >= 30
+and ((household_demographics.hd_dep_count = 2 and household_demographics.hd_vehicle_count<=2+2) or
+(household_demographics.hd_dep_count = 1 and household_demographics.hd_vehicle_count<=1+2) or
+(household_demographics.hd_dep_count = 4 and household_demographics.hd_vehicle_count<=4+2))
+and store.s_store_name = 'ese') s1,
+(select count(*) h9_to_9_30
+from store_sales, household_demographics , time_dim, store
+where ss_sold_time_sk = time_dim.t_time_sk
+and ss_hdemo_sk = household_demographics.hd_demo_sk
+and ss_store_sk = s_store_sk
+and time_dim.t_hour = 9
+and time_dim.t_minute < 30
+and ((household_demographics.hd_dep_count = 2 and household_demographics.hd_vehicle_count<=2+2) or
+(household_demographics.hd_dep_count = 1 and household_demographics.hd_vehicle_count<=1+2) or
+(household_demographics.hd_dep_count = 4 and household_demographics.hd_vehicle_count<=4+2))
+and store.s_store_name = 'ese') s2,
+(select count(*) h9_30_to_10
+from store_sales, household_demographics , time_dim, store
+where ss_sold_time_sk = time_dim.t_time_sk
+and ss_hdemo_sk = household_demographics.hd_demo_sk
+and ss_store_sk = s_store_sk
+and time_dim.t_hour = 9
+and time_dim.t_minute >= 30
+and ((household_demographics.hd_dep_count = 2 and household_demographics.hd_vehicle_count<=2+2) or
+(household_demographics.hd_dep_count = 1 and household_demographics.hd_vehicle_count<=1+2) or
+(household_demographics.hd_dep_count = 4 and household_demographics.hd_vehicle_count<=4+2))
+and store.s_store_name = 'ese') s3,
+(select count(*) h10_to_10_30
+from store_sales, household_demographics , time_dim, store
+where ss_sold_time_sk = time_dim.t_time_sk
+and ss_hdemo_sk = household_demographics.hd_demo_sk
+and ss_store_sk = s_store_sk
+and time_dim.t_hour = 10
+and time_dim.t_minute < 30
+and ((household_demographics.hd_dep_count = 2 and household_demographics.hd_vehicle_count<=2+2) or
+(household_demographics.hd_dep_count = 1 and household_demographics.hd_vehicle_count<=1+2) or
+(household_demographics.hd_dep_count = 4 and household_demographics.hd_vehicle_count<=4+2))
+and store.s_store_name = 'ese') s4,
+(select count(*) h10_30_to_11
+from store_sales, household_demographics , time_dim, store
+where ss_sold_time_sk = time_dim.t_time_sk
+and ss_hdemo_sk = household_demographics.hd_demo_sk
+and ss_store_sk = s_store_sk
+and time_dim.t_hour = 10
+and time_dim.t_minute >= 30
+and ((household_demographics.hd_dep_count = 2 and household_demographics.hd_vehicle_count<=2+2) or
+(household_demographics.hd_dep_count = 1 and household_demographics.hd_vehicle_count<=1+2) or
+(household_demographics.hd_dep_count = 4 and household_demographics.hd_vehicle_count<=4+2))
+and store.s_store_name = 'ese') s5,
+(select count(*) h11_to_11_30
+from store_sales, household_demographics , time_dim, store
+where ss_sold_time_sk = time_dim.t_time_sk
+and ss_hdemo_sk = household_demographics.hd_demo_sk
+and ss_store_sk = s_store_sk
+and time_dim.t_hour = 11
+and time_dim.t_minute < 30
+and ((household_demographics.hd_dep_count = 2 and household_demographics.hd_vehicle_count<=2+2) or
+(household_demographics.hd_dep_count = 1 and household_demographics.hd_vehicle_count<=1+2) or
+(household_demographics.hd_dep_count = 4 and household_demographics.hd_vehicle_count<=4+2))
+and store.s_store_name = 'ese') s6,
+(select count(*) h11_30_to_12
+from store_sales, household_demographics , time_dim, store
+where ss_sold_time_sk = time_dim.t_time_sk
+and ss_hdemo_sk = household_demographics.hd_demo_sk
+and ss_store_sk = s_store_sk
+and time_dim.t_hour = 11
+and time_dim.t_minute >= 30
+and ((household_demographics.hd_dep_count = 2 and household_demographics.hd_vehicle_count<=2+2) or
+(household_demographics.hd_dep_count = 1 and household_demographics.hd_vehicle_count<=1+2) or
+(household_demographics.hd_dep_count = 4 and household_demographics.hd_vehicle_count<=4+2))
+and store.s_store_name = 'ese') s7,
+(select count(*) h12_to_12_30
+from store_sales, household_demographics , time_dim, store
+where ss_sold_time_sk = time_dim.t_time_sk
+and ss_hdemo_sk = household_demographics.hd_demo_sk
+and ss_store_sk = s_store_sk
+and time_dim.t_hour = 12
+and time_dim.t_minute < 30
+and ((household_demographics.hd_dep_count = 2 and household_demographics.hd_vehicle_count<=2+2) or
+(household_demographics.hd_dep_count = 1 and household_demographics.hd_vehicle_count<=1+2) or
+(household_demographics.hd_dep_count = 4 and household_demographics.hd_vehicle_count<=4+2))
+and store.s_store_name = 'ese') s8
+Query submitted at: 2020-06-10 02:21:49 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=614888631336590c:01942c6e00000000
++------------+------------+-------------+--------------+--------------+--------------+--------------+--------------+
+| h8_30_to_9 | h9_to_9_30 | h9_30_to_10 | h10_to_10_30 | h10_30_to_11 | h11_to_11_30 | h11_30_to_12 | h12_to_12_30 |
++------------+------------+-------------+--------------+--------------+--------------+--------------+--------------+
+| 2500       | 4946       | 4868        | 8186         | 7425         | 4139         | 4447         | 5142         |
++------------+------------+-------------+--------------+--------------+--------------+--------------+--------------+
+Fetched 1 row(s) in 1.10s

@@ -1,0 +1,26 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: select i_item_id,
+avg(ss_quantity) agg1,
+avg(ss_list_price) agg2,
+avg(ss_coupon_amt) agg3,
+avg(ss_sales_price) agg4
+from store_sales, customer_demographics, date_dim, item, promotion
+where ss_sold_date_sk = d_date_sk and
+ss_item_sk = i_item_sk and
+ss_cdemo_sk = cd_demo_sk and
+ss_promo_sk = p_promo_sk and
+cd_gender = 'M' and
+cd_marital_status = 'M' and
+cd_education_status = '4 yr Degree' and
+(p_channel_email = 'N' or p_channel_event = 'N') and
+d_year = 2001
+group by i_item_id
+order by i_item_id
+limit 100
+Query submitted at: 2020-06-10 02:21:21 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=9a46edfbe9c9a071:e4bce40b00000000
+Fetched 0 row(s) in 0.83s

@@ -1,0 +1,105 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: INSERT INTO call_center            SELECT * FROM ext_call_center
+Query submitted at: 2020-06-10 02:14:49 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=b847ca138f178f5e:0fcf993700000000
+Modified 6 row(s), 0 row error(s) in 4.72s
+Query: INSERT INTO catalog_page           SELECT * FROM ext_catalog_page
+Query submitted at: 2020-06-10 02:14:54 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=5f4e2ab54eeffd4a:e4aff91900000000
+Modified 11718 row(s), 0 row error(s) in 4.00s
+Query: INSERT INTO catalog_returns        SELECT     cr_item_sk                              ,    cr_order_number                          ,    cr_returned_date_sk                              ,    cr_returned_time_sk                              ,    cr_refunded_customer_sk                          ,    cr_refunded_cdemo_sk                             ,    cr_refunded_hdemo_sk                             ,    cr_refunded_addr_sk                              ,    cr_returning_customer_sk                         ,    cr_returning_cdemo_sk                            ,    cr_returning_hdemo_sk                            ,    cr_returning_addr_sk                             ,    cr_call_center_sk                                ,    cr_catalog_page_sk                               ,    cr_ship_mode_sk                                  ,    cr_warehouse_sk                                  ,    cr_reason_sk                                     ,    cr_return_quantity                               ,    cr_return_amount                            ,    cr_return_tax                               ,    cr_return_amt_inc_tax                       ,    cr_fee                                      ,    cr_return_ship_cost                         ,    cr_refunded_cash                            ,    cr_reversed_charge                          ,    cr_store_credit                             ,    cr_net_loss                                  FROM ext_catalog_returns
+Query submitted at: 2020-06-10 02:14:58 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=d349958a5c784d1f:7018f8e700000000
+Modified 144067 row(s), 0 row error(s) in 5.41s
+Query: INSERT INTO catalog_sales          SELECT     cs_item_sk                              ,    cs_order_number                          ,    cs_sold_date_sk                                  ,    cs_sold_time_sk                                  ,    cs_ship_date_sk                                  ,    cs_bill_customer_sk                              ,    cs_bill_cdemo_sk                                 ,    cs_bill_hdemo_sk                                 ,    cs_bill_addr_sk                                  ,    cs_ship_customer_sk                              ,    cs_ship_cdemo_sk                                 ,    cs_ship_hdemo_sk                                 ,    cs_ship_addr_sk                                  ,    cs_call_center_sk                                ,    cs_catalog_page_sk                               ,    cs_ship_mode_sk                                  ,    cs_warehouse_sk                                  ,    cs_promo_sk                                      ,    cs_quantity                                      ,    cs_wholesale_cost                           ,    cs_list_price                               ,    cs_sales_price                              ,    cs_ext_discount_amt                         ,    cs_ext_sales_price                          ,    cs_ext_wholesale_cost                       ,    cs_ext_list_price                           ,    cs_ext_tax                                  ,    cs_coupon_amt                               ,    cs_ext_ship_cost                            ,    cs_net_paid                                 ,    cs_net_paid_inc_tax                         ,    cs_net_paid_inc_ship                        ,    cs_net_paid_inc_ship_tax                    ,    cs_net_profit                               FROM ext_catalog_sales
+Query submitted at: 2020-06-10 02:15:03 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=cf43549b863bf4b9:9c13a10f00000000
+Modified 1441548 row(s), 0 row error(s) in 12.44s
+Query: INSERT INTO customer               SELECT * FROM ext_customer
+Query submitted at: 2020-06-10 02:15:16 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=214e8dd9c612810a:489dad5a00000000
+Modified 100000 row(s), 0 row error(s) in 5.57s
+Query: INSERT INTO customer_address       SELECT * FROM ext_customer_address
+Query submitted at: 2020-06-10 02:15:21 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=054aeca2b650357b:a4ed8d0500000000
+Modified 50000 row(s), 0 row error(s) in 5.20s
+Query: INSERT INTO customer_demographics  SELECT * FROM ext_customer_demographics
+Query submitted at: 2020-06-10 02:15:26 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=51492cacd76314c7:57f172af00000000
+Modified 1920800 row(s), 0 row error(s) in 21.27s
+Query: INSERT INTO date_dim               SELECT * FROM ext_date_dim
+Query submitted at: 2020-06-10 02:15:48 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=ba4c58cef86ead49:3c2a462700000000
+Modified 73049 row(s), 0 row error(s) in 5.04s
+Query: INSERT INTO dbgen_version          SELECT * FROM ext_dbgen_version
+Query submitted at: 2020-06-10 02:15:53 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=fe47c9bc50f77397:7c2f1dff00000000
+Modified 1 row(s), 0 row error(s) in 3.09s
+Query: INSERT INTO household_demographics SELECT * FROM ext_household_demographics
+Query submitted at: 2020-06-10 02:15:56 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=bb40f7eab2128906:ba1bb31600000000
+Modified 7200 row(s), 0 row error(s) in 4.00s
+Query: INSERT INTO income_band            SELECT * FROM ext_income_band
+Query submitted at: 2020-06-10 02:16:00 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=a942bf6b52fb42d5:a1d0456500000000
+Modified 20 row(s), 0 row error(s) in 4.00s
+Query: INSERT INTO inventory              SELECT * FROM ext_inventory
+Query submitted at: 2020-06-10 02:16:04 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=0f44b043b12ac81c:9da624c300000000
+Modified 11745000 row(s), 0 row error(s) in 45.41s
+Query: INSERT INTO item                   SELECT * FROM ext_item
+Query submitted at: 2020-06-10 02:16:49 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=3d47f275cfee65c7:7aa4d68600000000
+Modified 18000 row(s), 0 row error(s) in 4.90s
+Query: INSERT INTO promotion              SELECT * FROM ext_promotion
+Query submitted at: 2020-06-10 02:16:54 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=92461744b0d2fa35:e931f03d00000000
+Modified 300 row(s), 0 row error(s) in 3.59s
+Query: INSERT INTO reason                 SELECT * FROM ext_reason
+Query submitted at: 2020-06-10 02:16:58 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=394c0e3fa3cee73d:0dceac5700000000
+Modified 35 row(s), 0 row error(s) in 4.00s
+Query: INSERT INTO ship_mode              SELECT * FROM ext_ship_mode
+Query submitted at: 2020-06-10 02:17:02 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=9d4e56591ed40b7b:e390a9d500000000
+Modified 20 row(s), 0 row error(s) in 4.00s
+Query: INSERT INTO store                  SELECT * FROM ext_store
+Query submitted at: 2020-06-10 02:17:06 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=454943e6037009a7:c2a9c99200000000
+Modified 12 row(s), 0 row error(s) in 4.01s
+Query: INSERT INTO store_returns          SELECT     sr_item_sk                               ,    sr_ticket_number                         ,    sr_returned_date_sk                              ,    sr_return_time_sk                                ,    sr_customer_sk                                   ,    sr_cdemo_sk                                      ,    sr_hdemo_sk                                      ,    sr_addr_sk                                       ,    sr_store_sk                                      ,    sr_reason_sk                                     ,    sr_return_quantity                               ,    sr_return_amt                               ,    sr_return_tax                               ,    sr_return_amt_inc_tax                       ,    sr_fee                                      ,    sr_return_ship_cost                         ,    sr_refunded_cash                            ,    sr_reversed_charge                          ,    sr_store_credit                             ,    sr_net_loss                                 FROM ext_store_returns
+Query submitted at: 2020-06-10 02:17:10 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=25447df99a516df9:fa4c331300000000
+Modified 287514 row(s), 0 row error(s) in 6.51s
+Query: INSERT INTO store_sales            SELECT     ss_item_sk                               ,    ss_ticket_number                         ,    ss_sold_date_sk                                 ,    ss_sold_time_sk                                  ,    ss_customer_sk                                   ,    ss_cdemo_sk                                      ,    ss_hdemo_sk                                      ,    ss_addr_sk                                       ,    ss_store_sk                                      ,    ss_promo_sk                                      ,    ss_quantity                                      ,    ss_wholesale_cost                           ,    ss_list_price                               ,    ss_sales_price                              ,    ss_ext_discount_amt                         ,    ss_ext_sales_price                          ,    ss_ext_wholesale_cost                       ,    ss_ext_list_price                           ,    ss_ext_tax                                  ,    ss_coupon_amt                               ,    ss_net_paid                                 ,    ss_net_paid_inc_tax                         ,    ss_net_profit                               FROM ext_store_sales
+Query submitted at: 2020-06-10 02:17:16 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=f5420abdbe281af5:3b8f3e2b00000000
+Modified 2880404 row(s), 0 row error(s) in 15.45s
+Query: INSERT INTO time_dim               SELECT * FROM ext_time_dim
+Query submitted at: 2020-06-10 02:17:32 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=2d45b220663b3a55:889471f300000000
+Modified 86400 row(s), 0 row error(s) in 4.84s
+Query: INSERT INTO warehouse              SELECT * FROM ext_warehouse
+Query submitted at: 2020-06-10 02:17:36 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=b74624034de84256:c7c8efa500000000
+Modified 5 row(s), 0 row error(s) in 3.30s
+Query: INSERT INTO web_page               SELECT * FROM ext_web_page
+Query submitted at: 2020-06-10 02:17:40 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=a440e43f4fde7d53:f7a2cfee00000000
+Modified 60 row(s), 0 row error(s) in 3.90s
+Query: INSERT INTO web_returns            SELECT     wr_item_sk                               ,    wr_order_number                          ,    wr_returned_date_sk                              ,    wr_returned_time_sk                              ,    wr_refunded_customer_sk                          ,    wr_refunded_cdemo_sk                             ,    wr_refunded_hdemo_sk                             ,    wr_refunded_addr_sk                              ,    wr_returning_customer_sk                         ,    wr_returning_cdemo_sk                            ,    wr_returning_hdemo_sk                            ,    wr_returning_addr_sk                             ,    wr_web_page_sk                                   ,    wr_reason_sk                                     ,    wr_return_quantity                               ,    wr_return_amt                               ,    wr_return_tax                               ,    wr_return_amt_inc_tax                       ,    wr_fee                                      ,    wr_return_ship_cost                         ,    wr_refunded_cash                            ,    wr_reversed_charge                          ,    wr_account_credit                           ,    wr_net_loss                                 FROM ext_web_returns
+Query submitted at: 2020-06-10 02:17:44 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=0d41db79fb14ffa6:24639e3200000000
+Modified 71763 row(s), 0 row error(s) in 4.81s
+Query: INSERT INTO web_sales              SELECT     ws_item_sk                               ,    ws_order_number                          ,    ws_sold_date_sk                                  ,    ws_sold_time_sk                                  ,    ws_ship_date_sk                                  ,    ws_bill_customer_sk                              ,    ws_bill_cdemo_sk                                 ,    ws_bill_hdemo_sk                                 ,    ws_bill_addr_sk                                  ,    ws_ship_customer_sk                              ,    ws_ship_cdemo_sk                                 ,    ws_ship_hdemo_sk                                 ,    ws_ship_addr_sk                                  ,    ws_web_page_sk                                   ,    ws_web_site_sk                                   ,    ws_ship_mode_sk                                  ,    ws_warehouse_sk                                  ,    ws_promo_sk                                      ,    ws_quantity                                      ,    ws_wholesale_cost                           ,    ws_list_price                               ,    ws_sales_price                              ,    ws_ext_discount_amt                         ,    ws_ext_sales_price                          ,    ws_ext_wholesale_cost                       ,    ws_ext_list_price                           ,    ws_ext_tax                                  ,    ws_coupon_amt                               ,    ws_ext_ship_cost                            ,    ws_net_paid                                 ,    ws_net_paid_inc_tax                         ,    ws_net_paid_inc_ship                        ,    ws_net_paid_inc_ship_tax                    ,    ws_net_profit                               FROM ext_web_sales
+Query submitted at: 2020-06-10 02:17:48 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=634169da0cb67a20:3f69030600000000
+Modified 719384 row(s), 0 row error(s) in 11.44s
+Query: INSERT INTO web_site               SELECT * FROM ext_web_site
+Query submitted at: 2020-06-10 02:18:00 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=d546a0ac12a9770d:59b41d2e00000000
+Modified 30 row(s), 0 row error(s) in 3.75s

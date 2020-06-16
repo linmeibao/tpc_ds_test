@@ -1,0 +1,34 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: select s_store_name, s_store_id,
+sum(case when (d_day_name='Sunday') then ss_sales_price else null end) sun_sales,
+sum(case when (d_day_name='Monday') then ss_sales_price else null end) mon_sales,
+sum(case when (d_day_name='Tuesday') then ss_sales_price else  null end) tue_sales,
+sum(case when (d_day_name='Wednesday') then ss_sales_price else null end) wed_sales,
+sum(case when (d_day_name='Thursday') then ss_sales_price else null end) thu_sales,
+sum(case when (d_day_name='Friday') then ss_sales_price else null end) fri_sales,
+sum(case when (d_day_name='Saturday') then ss_sales_price else null end) sat_sales
+from date_dim, store_sales, store
+where d_date_sk = ss_sold_date_sk and
+s_store_sk = ss_store_sk and
+s_gmt_offset = -5 and
+d_year = 2000
+group by s_store_name, s_store_id
+order by s_store_name, s_store_id,sun_sales,mon_sales,tue_sales,wed_sales,thu_sales,fri_sales,sat_sales
+limit 100
+Query submitted at: 2020-06-10 02:21:06 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=9e4b9ed092e0eb8c:a12b445200000000
++--------------+------------------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
+| s_store_name | s_store_id       | sun_sales | mon_sales | tue_sales | wed_sales | thu_sales | fri_sales | sat_sales |
++--------------+------------------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
+| able         | AAAAAAAACAAAAAAA | NULL      | NULL      | NULL      | 443696.30 | NULL      | NULL      | NULL      |
+| ation        | AAAAAAAAHAAAAAAA | NULL      | NULL      | NULL      | 492870.99 | NULL      | NULL      | NULL      |
+| bar          | AAAAAAAAKAAAAAAA | NULL      | NULL      | NULL      | 474630.24 | NULL      | NULL      | NULL      |
+| eing         | AAAAAAAAIAAAAAAA | NULL      | NULL      | NULL      | 454921.28 | NULL      | NULL      | NULL      |
+| ese          | AAAAAAAAEAAAAAAA | NULL      | NULL      | NULL      | 466232.23 | NULL      | NULL      | NULL      |
+| ought        | AAAAAAAABAAAAAAA | NULL      | NULL      | NULL      | 482690.52 | NULL      | NULL      | NULL      |
++--------------+------------------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
+Fetched 6 row(s) in 0.73s

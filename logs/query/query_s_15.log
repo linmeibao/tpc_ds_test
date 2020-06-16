@@ -1,0 +1,143 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: select substr(w_warehouse_name,1,20)
+,sm_type
+,web_name
+,sum(case when (ws_ship_date_sk - ws_sold_date_sk <= 30 ) then 1 else 0 end)  as "30 days"
+,sum(case when (ws_ship_date_sk - ws_sold_date_sk > 30) and
+(ws_ship_date_sk - ws_sold_date_sk <= 60) then 1 else 0 end )  as "31-60 days"
+,sum(case when (ws_ship_date_sk - ws_sold_date_sk > 60) and
+(ws_ship_date_sk - ws_sold_date_sk <= 90) then 1 else 0 end)  as "61-90 days"
+,sum(case when (ws_ship_date_sk - ws_sold_date_sk > 90) and
+(ws_ship_date_sk - ws_sold_date_sk <= 120) then 1 else 0 end)  as "91-120 days"
+,sum(case when (ws_ship_date_sk - ws_sold_date_sk  > 120) then 1 else 0 end)  as ">120 days"
+from
+web_sales
+,warehouse
+,ship_mode
+,web_site
+,date_dim
+where
+d_month_seq between 1217 and 1217 + 11
+and ws_ship_date_sk   = d_date_sk
+and ws_warehouse_sk   = w_warehouse_sk
+and ws_ship_mode_sk   = sm_ship_mode_sk
+and ws_web_site_sk    = web_site_sk
+group by
+substr(w_warehouse_name,1,20)
+,sm_type
+,web_name
+order by substr(w_warehouse_name,1,20)
+,sm_type
+,web_name
+limit 100
+Query submitted at: 2020-06-10 02:21:14 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=39485f23a519c50c:f1c64c3e00000000
++---------------------------------+--------------------------------+----------+---------+------------+------------+-------------+-----------+
+| substr(w_warehouse_name, 1, 20) | sm_type                        | web_name | 30 days | 31-60 days | 61-90 days | 91-120 days | >120 days |
++---------------------------------+--------------------------------+----------+---------+------------+------------+-------------+-----------+
+|                                 | EXPRESS                        | site_0   | 290     | 302        | 308        | 295         | 0         |
+|                                 | EXPRESS                        | site_1   | 318     | 301        | 307        | 330         | 0         |
+|                                 | EXPRESS                        | site_2   | 284     | 335        | 336        | 307         | 0         |
+|                                 | EXPRESS                        | site_3   | 247     | 263        | 289        | 263         | 0         |
+|                                 | EXPRESS                        | site_4   | 248     | 269        | 282        | 290         | 0         |
+|                                 | LIBRARY                        | site_0   | 186     | 193        | 177        | 157         | 0         |
+|                                 | LIBRARY                        | site_1   | 238     | 236        | 229        | 228         | 0         |
+|                                 | LIBRARY                        | site_2   | 260     | 242        | 262        | 226         | 0         |
+|                                 | LIBRARY                        | site_3   | 264     | 266        | 245        | 250         | 0         |
+|                                 | LIBRARY                        | site_4   | 224     | 214        | 218        | 180         | 0         |
+|                                 | NEXT DAY                       | site_0   | 307     | 294        | 293        | 306         | 0         |
+|                                 | NEXT DAY                       | site_1   | 307     | 331        | 286        | 310         | 0         |
+|                                 | NEXT DAY                       | site_2   | 308     | 282        | 265        | 292         | 0         |
+|                                 | NEXT DAY                       | site_3   | 278     | 258        | 267        | 285         | 0         |
+|                                 | NEXT DAY                       | site_4   | 279     | 296        | 298        | 333         | 0         |
+|                                 | OVERNIGHT                      | site_0   | 241     | 229        | 250        | 250         | 0         |
+|                                 | OVERNIGHT                      | site_1   | 228     | 208        | 203        | 194         | 0         |
+|                                 | OVERNIGHT                      | site_2   | 183     | 184        | 179        | 179         | 0         |
+|                                 | OVERNIGHT                      | site_3   | 214     | 197        | 206        | 220         | 0         |
+|                                 | OVERNIGHT                      | site_4   | 217     | 244        | 245        | 248         | 0         |
+|                                 | REGULAR                        | site_0   | 209     | 233        | 210        | 214         | 0         |
+|                                 | REGULAR                        | site_1   | 221     | 271        | 238        | 251         | 0         |
+|                                 | REGULAR                        | site_2   | 244     | 252        | 228        | 251         | 0         |
+|                                 | REGULAR                        | site_3   | 209     | 212        | 181        | 224         | 0         |
+|                                 | REGULAR                        | site_4   | 199     | 191        | 216        | 164         | 0         |
+|                                 | TWO DAY                        | site_0   | 202     | 215        | 226        | 233         | 0         |
+|                                 | TWO DAY                        | site_1   | 195     | 185        | 183        | 153         | 0         |
+|                                 | TWO DAY                        | site_2   | 194     | 216        | 214        | 192         | 0         |
+|                                 | TWO DAY                        | site_3   | 255     | 238        | 224        | 241         | 0         |
+|                                 | TWO DAY                        | site_4   | 265     | 256        | 226        | 224         | 0         |
+| Bad cards must make.            | EXPRESS                        | site_0   | 289     | 305        | 255        | 265         | 0         |
+| Bad cards must make.            | EXPRESS                        | site_1   | 279     | 252        | 286        | 282         | 0         |
+| Bad cards must make.            | EXPRESS                        | site_2   | 311     | 320        | 302        | 313         | 0         |
+| Bad cards must make.            | EXPRESS                        | site_3   | 297     | 312        | 256        | 284         | 0         |
+| Bad cards must make.            | EXPRESS                        | site_4   | 324     | 349        | 280        | 290         | 0         |
+| Bad cards must make.            | LIBRARY                        | site_0   | 247     | 256        | 233        | 253         | 0         |
+| Bad cards must make.            | LIBRARY                        | site_1   | 205     | 223        | 207        | 220         | 0         |
+| Bad cards must make.            | LIBRARY                        | site_2   | 206     | 198        | 183        | 177         | 0         |
+| Bad cards must make.            | LIBRARY                        | site_3   | 193     | 214        | 231        | 198         | 0         |
+| Bad cards must make.            | LIBRARY                        | site_4   | 215     | 244        | 235        | 232         | 0         |
+| Bad cards must make.            | NEXT DAY                       | site_0   | 272     | 324        | 263        | 276         | 0         |
+| Bad cards must make.            | NEXT DAY                       | site_1   | 286     | 293        | 315        | 316         | 0         |
+| Bad cards must make.            | NEXT DAY                       | site_2   | 308     | 290        | 314        | 324         | 0         |
+| Bad cards must make.            | NEXT DAY                       | site_3   | 283     | 331        | 341        | 312         | 0         |
+| Bad cards must make.            | NEXT DAY                       | site_4   | 248     | 288        | 259        | 278         | 0         |
+| Bad cards must make.            | OVERNIGHT                      | site_0   | 225     | 220        | 212        | 212         | 0         |
+| Bad cards must make.            | OVERNIGHT                      | site_1   | 245     | 229        | 242        | 263         | 0         |
+| Bad cards must make.            | OVERNIGHT                      | site_2   | 242     | 236        | 256        | 243         | 0         |
+| Bad cards must make.            | OVERNIGHT                      | site_3   | 173     | 226        | 224        | 236         | 0         |
+| Bad cards must make.            | OVERNIGHT                      | site_4   | 203     | 169        | 191        | 156         | 0         |
+| Bad cards must make.            | REGULAR                        | site_0   | 232     | 217        | 229        | 219         | 0         |
+| Bad cards must make.            | REGULAR                        | site_1   | 190     | 198        | 181        | 166         | 0         |
+| Bad cards must make.            | REGULAR                        | site_2   | 205     | 237        | 246        | 229         | 0         |
+| Bad cards must make.            | REGULAR                        | site_3   | 235     | 252        | 241        | 251         | 0         |
+| Bad cards must make.            | REGULAR                        | site_4   | 243     | 259        | 231        | 257         | 0         |
+| Bad cards must make.            | TWO DAY                        | site_0   | 233     | 228        | 267        | 201         | 0         |
+| Bad cards must make.            | TWO DAY                        | site_1   | 269     | 231        | 253        | 260         | 0         |
+| Bad cards must make.            | TWO DAY                        | site_2   | 232     | 211        | 222        | 227         | 0         |
+| Bad cards must make.            | TWO DAY                        | site_3   | 163     | 186        | 190        | 189         | 0         |
+| Bad cards must make.            | TWO DAY                        | site_4   | 207     | 205        | 203        | 223         | 0         |
+| Conventional childr             | EXPRESS                        | site_0   | 318     | 307        | 315        | 312         | 0         |
+| Conventional childr             | EXPRESS                        | site_1   | 284     | 269        | 245        | 303         | 0         |
+| Conventional childr             | EXPRESS                        | site_2   | 254     | 262        | 279        | 259         | 0         |
+| Conventional childr             | EXPRESS                        | site_3   | 307     | 306        | 294        | 278         | 0         |
+| Conventional childr             | EXPRESS                        | site_4   | 310     | 252        | 317        | 301         | 0         |
+| Conventional childr             | LIBRARY                        | site_0   | 234     | 214        | 234        | 219         | 0         |
+| Conventional childr             | LIBRARY                        | site_1   | 210     | 276        | 260        | 239         | 0         |
+| Conventional childr             | LIBRARY                        | site_2   | 206     | 224        | 217        | 210         | 0         |
+| Conventional childr             | LIBRARY                        | site_3   | 175     | 198        | 174        | 199         | 0         |
+| Conventional childr             | LIBRARY                        | site_4   | 193     | 186        | 220        | 198         | 0         |
+| Conventional childr             | NEXT DAY                       | site_0   | 269     | 270        | 282        | 269         | 0         |
+| Conventional childr             | NEXT DAY                       | site_1   | 273     | 249        | 262        | 268         | 0         |
+| Conventional childr             | NEXT DAY                       | site_2   | 289     | 275        | 303        | 303         | 0         |
+| Conventional childr             | NEXT DAY                       | site_3   | 279     | 292        | 311        | 312         | 0         |
+| Conventional childr             | NEXT DAY                       | site_4   | 318     | 284        | 309        | 308         | 0         |
+| Conventional childr             | OVERNIGHT                      | site_0   | 179     | 167        | 162        | 193         | 0         |
+| Conventional childr             | OVERNIGHT                      | site_1   | 186     | 210        | 235        | 217         | 0         |
+| Conventional childr             | OVERNIGHT                      | site_2   | 209     | 236        | 243        | 259         | 0         |
+| Conventional childr             | OVERNIGHT                      | site_3   | 245     | 240        | 235        | 237         | 0         |
+| Conventional childr             | OVERNIGHT                      | site_4   | 215     | 209        | 216        | 195         | 0         |
+| Conventional childr             | REGULAR                        | site_0   | 226     | 239        | 247        | 245         | 0         |
+| Conventional childr             | REGULAR                        | site_1   | 215     | 198        | 216        | 187         | 0         |
+| Conventional childr             | REGULAR                        | site_2   | 167     | 181        | 189        | 199         | 0         |
+| Conventional childr             | REGULAR                        | site_3   | 219     | 219        | 210        | 185         | 0         |
+| Conventional childr             | REGULAR                        | site_4   | 241     | 256        | 223        | 252         | 0         |
+| Conventional childr             | TWO DAY                        | site_0   | 239     | 220        | 235        | 206         | 0         |
+| Conventional childr             | TWO DAY                        | site_1   | 243     | 238        | 258        | 245         | 0         |
+| Conventional childr             | TWO DAY                        | site_2   | 229     | 242        | 266        | 264         | 0         |
+| Conventional childr             | TWO DAY                        | site_3   | 207     | 201        | 225        | 207         | 0         |
+| Conventional childr             | TWO DAY                        | site_4   | 165     | 182        | 160        | 212         | 0         |
+| Doors canno                     | EXPRESS                        | site_0   | 317     | 290        | 300        | 321         | 0         |
+| Doors canno                     | EXPRESS                        | site_1   | 292     | 324        | 283        | 316         | 0         |
+| Doors canno                     | EXPRESS                        | site_2   | 305     | 262        | 284        | 267         | 0         |
+| Doors canno                     | EXPRESS                        | site_3   | 284     | 285        | 297        | 273         | 0         |
+| Doors canno                     | EXPRESS                        | site_4   | 284     | 312        | 282        | 313         | 0         |
+| Doors canno                     | LIBRARY                        | site_0   | 232     | 207        | 233        | 212         | 0         |
+| Doors canno                     | LIBRARY                        | site_1   | 274     | 250        | 257        | 277         | 0         |
+| Doors canno                     | LIBRARY                        | site_2   | 235     | 255        | 244        | 243         | 0         |
+| Doors canno                     | LIBRARY                        | site_3   | 207     | 224        | 216        | 224         | 0         |
+| Doors canno                     | LIBRARY                        | site_4   | 181     | 197        | 177        | 180         | 0         |
++---------------------------------+--------------------------------+----------+---------+------------+------------+-------------+-----------+
+Fetched 100 row(s) in 1.16s

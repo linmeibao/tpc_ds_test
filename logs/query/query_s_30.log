@@ -1,0 +1,180 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: with year_total as (
+select c_customer_id customer_id
+,c_first_name customer_first_name
+,c_last_name customer_last_name
+,c_preferred_cust_flag customer_preferred_cust_flag
+,c_birth_country customer_birth_country
+,c_login customer_login
+,c_email_address customer_email_address
+,d_year dyear
+,sum(ss_ext_list_price-ss_ext_discount_amt) year_total
+,'s' sale_type
+from customer
+,store_sales
+,date_dim
+where c_customer_sk = ss_customer_sk
+and ss_sold_date_sk = d_date_sk
+group by c_customer_id
+,c_first_name
+,c_last_name
+,c_preferred_cust_flag
+,c_birth_country
+,c_login
+,c_email_address
+,d_year
+union all
+select c_customer_id customer_id
+,c_first_name customer_first_name
+,c_last_name customer_last_name
+,c_preferred_cust_flag customer_preferred_cust_flag
+,c_birth_country customer_birth_country
+,c_login customer_login
+,c_email_address customer_email_address
+,d_year dyear
+,sum(ws_ext_list_price-ws_ext_discount_amt) year_total
+,'w' sale_type
+from customer
+,web_sales
+,date_dim
+where c_customer_sk = ws_bill_customer_sk
+and ws_sold_date_sk = d_date_sk
+group by c_customer_id
+,c_first_name
+,c_last_name
+,c_preferred_cust_flag
+,c_birth_country
+,c_login
+,c_email_address
+,d_year
+)
+select
+t_s_secyear.customer_id
+,t_s_secyear.customer_first_name
+,t_s_secyear.customer_last_name
+,t_s_secyear.customer_email_address
+from year_total t_s_firstyear
+,year_total t_s_secyear
+,year_total t_w_firstyear
+,year_total t_w_secyear
+where t_s_secyear.customer_id = t_s_firstyear.customer_id
+and t_s_firstyear.customer_id = t_w_secyear.customer_id
+and t_s_firstyear.customer_id = t_w_firstyear.customer_id
+and t_s_firstyear.sale_type = 's'
+and t_w_firstyear.sale_type = 'w'
+and t_s_secyear.sale_type = 's'
+and t_w_secyear.sale_type = 'w'
+and t_s_firstyear.dyear = 1999
+and t_s_secyear.dyear = 1999+1
+and t_w_firstyear.dyear = 1999
+and t_w_secyear.dyear = 1999+1
+and t_s_firstyear.year_total > 0
+and t_w_firstyear.year_total > 0
+and case when t_w_firstyear.year_total > 0 then t_w_secyear.year_total / t_w_firstyear.year_total else 0.0 end
+> case when t_s_firstyear.year_total > 0 then t_s_secyear.year_total / t_s_firstyear.year_total else 0.0 end
+order by t_s_secyear.customer_id
+,t_s_secyear.customer_first_name
+,t_s_secyear.customer_last_name
+,t_s_secyear.customer_email_address
+limit 100
+Query submitted at: 2020-06-10 02:21:36 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=8843bfccab64fcaa:cd83abf700000000
++------------------+----------------------+--------------------------------+----------------------------------------------------+
+| customer_id      | customer_first_name  | customer_last_name             | customer_email_address                             |
++------------------+----------------------+--------------------------------+----------------------------------------------------+
+| AAAAAAAAAGEJAAAA | Michael              | Tolbert                        | Michael.Tolbert@D8O5R.com                          |
+| AAAAAAAAAGOLAAAA | Lawrence             | Reed                           | Lawrence.Reed@4tUSGo1o.org                         |
+| AAAAAAAAAHAGBAAA | Nilda                | Bernal                         | Nilda.Bernal@afeQH6HuLAeQt.org                     |
+| AAAAAAAAAIFBBAAA | Juana                | Giles                          | Juana.Giles@D0JsFLeloECaxb.com                     |
+| AAAAAAAAAJNGBAAA | Roger                | Kaufman                        | Roger.Kaufman@rMosVj1GQS.org                       |
+| AAAAAAAAAKOBBAAA | William              | Alderman                       | William.Alderman@LHfDRblj.edu                      |
+| AAAAAAAAALDHBAAA | Lori                 | Barrett                        | Lori.Barrett@XpjxdL.edu                            |
+| AAAAAAAABAPIAAAA | Rona                 | Jordan                         | Rona.Jordan@9N0JqyMFax8eJmm9pB.edu                 |
+| AAAAAAAABFJGAAAA | Willie               | Ott                            |                                                    |
+| AAAAAAAABKBAAAAA | Kayleen              | Edwards                        | Kayleen.Edwards@30KnGgPvZ.org                      |
+| AAAAAAAABPBNAAAA | John                 | Curley                         | John.Curley@F93n5zKS.com                           |
+| AAAAAAAACECHBAAA | Keith                | Fortner                        | Keith.Fortner@stZCx7T.edu                          |
+| AAAAAAAACHAKAAAA | Charles              | Rivers                         | Charles.Rivers@H5CYaRBe6KO.com                     |
+| AAAAAAAACHEAAAAA | Claudia              | Adkins                         | Claudia.Adkins@l.edu                               |
+| AAAAAAAACIGGBAAA | Julie                | Perry                          | Julie.Perry@QgEJ0QSj.org                           |
+| AAAAAAAACJEDBAAA | Deborah              | Ross                           | Deborah.Ross@JMiHJtgZK9rg.org                      |
+| AAAAAAAACLJNAAAA | Lashawn              | Rutherford                     | Lashawn.Rutherford@QenZQFVTSshR.edu                |
+| AAAAAAAADDODAAAA | Debra                | Pool                           | Debra.Pool@BAdXqBNFk05f.org                        |
+| AAAAAAAADJJBAAAA | Jeannie              | Ray                            | Jeannie.Ray@4zX5Ojck7u0bceC3tJ.org                 |
+| AAAAAAAADNFBBAAA | Vicki                | Held                           | Vicki.Held@pRS4zE2hidpR04.org                      |
+| AAAAAAAAEDBAAAAA | Ashley               | Thompson                       | Ashley.Thompson@uH34bg8ike.com                     |
+| AAAAAAAAEEDKAAAA | Ngoc                 | Morris                         | Ngoc.Morris@Tgb.org                                |
+| AAAAAAAAEGCEAAAA | Leah                 | Jenkins                        | Leah.Jenkins@X3VOYOMGE.edu                         |
+| AAAAAAAAEGNCBAAA | Larry                | Brown                          | Larry.Brown@U16iJEkefCb.org                        |
+| AAAAAAAAEHJDBAAA | Doris                | Muse                           | Doris.Muse@S71TEYsd4iiOz87.edu                     |
+| AAAAAAAAFAIGBAAA | Amanda               | Sosa                           | Amanda.Sosa@p23gzrhUDpLGm.com                      |
+| AAAAAAAAFEFJAAAA | Karen                | Burton                         | Karen.Burton@PtCbuVd5R.edu                         |
+| AAAAAAAAFFFIBAAA | Howard               | Guay                           | Howard.Guay@r4fEm3EP.com                           |
+| AAAAAAAAFFPFBAAA | Sima                 | Kelly                          | Sima.Kelly@T.com                                   |
+| AAAAAAAAFHIEBAAA | James                | Douglas                        | James.Douglas@ye2V.org                             |
+| AAAAAAAAFMECBAAA | Carl                 | Jones                          | Carl.Jones@6y4f8.org                               |
+| AAAAAAAAFPIJAAAA | Joanne               | Rhodes                         | Joanne.Rhodes@paSl0.com                            |
+| AAAAAAAAFPNGBAAA | Brian                | Powers                         | Brian.Powers@BnYvgaOck.com                         |
+| AAAAAAAAGHLBAAAA | John                 | Hyman                          | John.Hyman@Y.com                                   |
+| AAAAAAAAGIPABAAA | Pearlie              | Gomez                          | Pearlie.Gomez@FVVgS0tEb3K.edu                      |
+| AAAAAAAAGJBFBAAA | Christopher          | Jackson                        | Christopher.Jackson@rG.com                         |
+| AAAAAAAAGKEEAAAA | Felicia              | Cross                          | Felicia.Cross@8MRU.edu                             |
+| AAAAAAAAGKFDBAAA | Jane                 | Creel                          | Jane.Creel@QFm8MFi5.com                            |
+| AAAAAAAAGOPCAAAA | Davida               | Kerr                           | Davida.Kerr@CORZ5IkvYo.com                         |
+| AAAAAAAAHFKOAAAA | Howard               | Strand                         | Howard.Strand@vmDfyn6i0Hgi8CM.org                  |
+| AAAAAAAAHJIAAAAA | Graham               | Reis                           | Graham.Reis@zBq3nInHaJ.org                         |
+| AAAAAAAAIADJAAAA | David                | Mason                          | David.Mason@qJ.org                                 |
+| AAAAAAAAIALGAAAA | William              | Young                          | William.Young@3e0THOqOBK.edu                       |
+| AAAAAAAAICGOAAAA | Amos                 | Mason                          | Amos.Mason@21y.org                                 |
+| AAAAAAAAIDOEBAAA | Johnny               | Michael                        | Johnny.Michael@9NCvvX.com                          |
+| AAAAAAAAIFNBAAAA | Charles              | Curtis                         | Charles.Curtis@yVCcQHll2Ujr.edu                    |
+| AAAAAAAAIGJOAAAA | Bessie               | Zimmerman                      | Bessie.Zimmerman@McU1yRGzVpd.com                   |
+| AAAAAAAAIHDFAAAA |                      |                                | Donna.Dillard@7dVIUnzEu1.org                       |
+| AAAAAAAAIKNIAAAA | Roosevelt            | Bender                         | Roosevelt.Bender@ezQfRuaMBo71Gr8q3l.com            |
+| AAAAAAAAILLFAAAA | Jennifer             | Hernandez                      | Jennifer.Hernandez@kgXXbG9Yxsmy.edu                |
+| AAAAAAAAJBAHBAAA | Renea                | Dean                           | Renea.Dean@K.com                                   |
+| AAAAAAAAJBJGBAAA | Kathleen             | Lester                         | Kathleen.Lester@Cyu.edu                            |
+| AAAAAAAAJMCFBAAA | Zachary              | Pittman                        | Zachary.Pittman@iC121dt.org                        |
+| AAAAAAAAJOJKAAAA | Erik                 | Foster                         | Erik.Foster@TUPkVXjIkA5k.com                       |
+| AAAAAAAAJPDEAAAA | Robert               | Hardy                          | Robert.Hardy@I4kFTmGp4j4.org                       |
+| AAAAAAAAKAAKAAAA | Brian                | Miller                         | Brian.Miller@LG9cpG1euXUQnP.edu                    |
+| AAAAAAAAKJCAAAAA | Theresa              | Brown                          | Theresa.Brown@KAFsveGBPfGIm1G.com                  |
+| AAAAAAAAKJEAAAAA | George               | Zielinski                      | George.Zielinski@eoC.edu                           |
+| AAAAAAAAKKMDAAAA |                      | Brown                          | Linda.Brown@0lLsGZqAU9yXD.edu                      |
+| AAAAAAAAKNFGBAAA | Denise               | Glenn                          | Denise.Glenn@tabyEIIb5m.edu                        |
+| AAAAAAAAKPPDBAAA | Albert               | Haag                           | Albert.Haag@HG48Ism43q3.com                        |
+| AAAAAAAALAOFBAAA | Susie                | Watt                           | Susie.Watt@jECAqRzDibpRZn3Mq.edu                   |
+| AAAAAAAALCADBAAA | Erik                 | Price                          | Erik.Price@t4pIb7NjjtSo.com                        |
+| AAAAAAAALDNHAAAA | Edgar                | Gonzales                       | Edgar.Gonzales@RalAlMvMAdv.edu                     |
+| AAAAAAAALDOABAAA | Charles              | Atkins                         | Charles.Atkins@l.org                               |
+| AAAAAAAALIAFAAAA | Sharon               | Johnson                        | Sharon.Johnson@a0hX62eBU2UPX.com                   |
+| AAAAAAAALIJNAAAA | Charles              | Norton                         | Charles.Norton@c9rSReItIov.edu                     |
+| AAAAAAAALKDJAAAA | Angela               | Matthews                       | Angela.Matthews@u5725.org                          |
+| AAAAAAAALKLAAAAA | Jeffrey              | Jones                          | Jeffrey.Jones@ciuIB.com                            |
+| AAAAAAAALKLOAAAA | Todd                 | Guerra                         | Todd.Guerra@4jxUoYkoJ43vVH.org                     |
+| AAAAAAAALPPDBAAA | Stephanie            | Varela                         | Stephanie.Varela@MGOXjsJRSe.org                    |
+| AAAAAAAAMAEEBAAA | Robbi                | Spencer                        | Robbi.Spencer@kisc2.com                            |
+| AAAAAAAAMCNFBAAA | Justin               | Pack                           | Justin.Pack@kYzQZufboS1g.edu                       |
+| AAAAAAAAMHFFBAAA | Allen                | Morris                         | Allen.Morris@jSnuqI9.edu                           |
+| AAAAAAAANAPEBAAA | George               | Miller                         | George.Miller@LPetg656v.org                        |
+| AAAAAAAANBDOAAAA | George               | Stevens                        | George.Stevens@Hylp1Fsv.org                        |
+| AAAAAAAANCDEAAAA | Earl                 | Ray                            | Earl.Ray@BZSc.edu                                  |
+| AAAAAAAANCGGBAAA | Cornelius            | Wilcox                         | Cornelius.Wilcox@zHYf847NMUoqN9.org                |
+| AAAAAAAANDFCAAAA | Phillip              | Flores                         | Phillip.Flores@lHJJ7nEqBzP.edu                     |
+| AAAAAAAANDFGBAAA | James                | Schaffer                       | James.Schaffer@nT6ZJjjmqX7qSRYQs.edu               |
+| AAAAAAAANKAFAAAA | Willie               | Merritt                        | Willie.Merritt@Y6J.com                             |
+| AAAAAAAANKIDBAAA | Todd                 | Kimbrough                      | Todd.Kimbrough@Z.edu                               |
+| AAAAAAAANLGDAAAA | John                 | Barnes                         | John.Barnes@B2N.edu                                |
+| AAAAAAAANPOJAAAA | Erick                | Counts                         | Erick.Counts@UKI0.edu                              |
+| AAAAAAAAOANFBAAA | Jason                | Greenlee                       | Jason.Greenlee@MjAfr1fX4mz.org                     |
+| AAAAAAAAOBKJAAAA | Ronnie               | Slayton                        | Ronnie.Slayton@ILQ.org                             |
+| AAAAAAAAODNABAAA | Brice                | Logan                          | Brice.Logan@U8tqXVxFzFFlmT.org                     |
+| AAAAAAAAOKDEBAAA | James                | Garcia                         | James.Garcia@rhYU3aVecuLJruq.com                   |
+| AAAAAAAAPCEAAAAA | Tom                  | Bennett                        | Tom.Bennett@rozAjdt78rv.org                        |
+| AAAAAAAAPNNBAAAA | James                | Rodriguez                      | James.Rodriguez@FrqN3aLZ.edu                       |
++------------------+----------------------+--------------------------------+----------------------------------------------------+
+Fetched 90 row(s) in 1.96s

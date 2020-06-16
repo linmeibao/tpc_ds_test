@@ -1,0 +1,26 @@
+SQL语句,数据量,执行时长
+Query: SELECT COUNT(1) FROM call_center,6,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM catalog_page,11718,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM catalog_returns,144067,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM catalog_sales,1441548,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM customer,100000,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM customer_address,50000,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM customer_demographics,1920800,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM date_dim,73049,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM dbgen_version,1,Fetched 1 row(s) in 0.12s
+Query: SELECT COUNT(1) FROM household_demographics,7200,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM income_band,20,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM inventory,11745000,Fetched 1 row(s) in 0.21s
+Query: SELECT COUNT(1) FROM item,18000,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM promotion,300,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM reason,35,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM ship_mode,20,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM store,12,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM store_returns,287514,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM store_sales,2880404,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM time_dim,86400,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM warehouse,5,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM web_page,60,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM web_returns,71763,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM web_sales,719384,Fetched 1 row(s) in 0.11s
+Query: SELECT COUNT(1) FROM web_site,30,Fetched 1 row(s) in 0.11s

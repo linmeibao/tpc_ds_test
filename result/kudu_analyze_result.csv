@@ -1,0 +1,25 @@
+SQL语句,更新内容,执行时长
+Query: compute stats call_center,Updated 1 partition(s) and 31 column(s).,Fetched 1 row(s) in 1.31s
+Query: compute stats catalog_page,Updated 1 partition(s) and 9 column(s).,Fetched 1 row(s) in 0.61s
+Query: compute stats catalog_returns,Updated 1 partition(s) and 27 column(s).,Fetched 1 row(s) in 0.91s
+Query: compute stats catalog_sales,Updated 1 partition(s) and 34 column(s).,Fetched 1 row(s) in 1.31s
+Query: compute stats customer_address,Updated 1 partition(s) and 13 column(s).,Fetched 1 row(s) in 0.81s
+Query: compute stats customer_demographics,Updated 1 partition(s) and 9 column(s).,Fetched 1 row(s) in 0.91s
+Query: compute stats customer,Updated 1 partition(s) and 18 column(s).,Fetched 1 row(s) in 0.91s
+Query: compute stats date_dim,Updated 1 partition(s) and 28 column(s).,Fetched 1 row(s) in 1.11s
+Query: compute stats household_demographics,Updated 1 partition(s) and 5 column(s).,Fetched 1 row(s) in 0.51s
+Query: compute stats income_band,Updated 1 partition(s) and 3 column(s).,Fetched 1 row(s) in 0.41s
+Query: compute stats inventory,Updated 1 partition(s) and 4 column(s).,Fetched 1 row(s) in 0.91s
+Query: compute stats item,Updated 1 partition(s) and 22 column(s).,Fetched 1 row(s) in 1.01s
+Query: compute stats promotion,Updated 1 partition(s) and 19 column(s).,Fetched 1 row(s) in 0.91s
+Query: compute stats reason,Updated 1 partition(s) and 3 column(s).,Fetched 1 row(s) in 0.41s
+Query: compute stats ship_mode,Updated 1 partition(s) and 6 column(s).,Fetched 1 row(s) in 0.61s
+Query: compute stats store_returns,Updated 1 partition(s) and 20 column(s).,Fetched 1 row(s) in 0.71s
+Query: compute stats store_sales,Updated 1 partition(s) and 23 column(s).,Fetched 1 row(s) in 1.21s
+Query: compute stats store,Updated 1 partition(s) and 29 column(s).,Fetched 1 row(s) in 1.31s
+Query: compute stats time_dim,Updated 1 partition(s) and 10 column(s).,Fetched 1 row(s) in 0.61s
+Query: compute stats warehouse,Updated 1 partition(s) and 14 column(s).,Fetched 1 row(s) in 0.81s
+Query: compute stats web_page,Updated 1 partition(s) and 14 column(s).,Fetched 1 row(s) in 0.61s
+Query: compute stats web_returns,Updated 1 partition(s) and 24 column(s).,Fetched 1 row(s) in 0.71s
+Query: compute stats web_sales,Updated 1 partition(s) and 34 column(s).,Fetched 1 row(s) in 1.01s
+Query: compute stats web_site,Updated 1 partition(s) and 26 column(s).,Fetched 1 row(s) in 1.11s

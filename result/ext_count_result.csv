@@ -1,0 +1,26 @@
+SQL语句,数据量,执行时长
+Query: SELECT COUNT(1) FROM ext_call_center,6,Fetched 1 row(s) in 3.26s
+Query: SELECT COUNT(1) FROM ext_catalog_page,11718,Fetched 1 row(s) in 4.00s
+Query: SELECT COUNT(1) FROM ext_catalog_returns,144067,Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_catalog_sales,1441548,Fetched 1 row(s) in 4.09s
+Query: SELECT COUNT(1) FROM ext_customer,100000,Fetched 1 row(s) in 3.89s
+Query: SELECT COUNT(1) FROM ext_customer_address,50000,Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_customer_demographics,1920800,Fetched 1 row(s) in 4.09s
+Query: SELECT COUNT(1) FROM ext_date_dim,73049,Fetched 1 row(s) in 3.89s
+Query: SELECT COUNT(1) FROM ext_dbgen_version,1,Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_household_demographics,7200,Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_income_band,20,Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_inventory,11745000,Fetched 1 row(s) in 4.19s
+Query: SELECT COUNT(1) FROM ext_item,18000,Fetched 1 row(s) in 3.79s
+Query: SELECT COUNT(1) FROM ext_promotion,300,Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_reason,35,Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_ship_mode,20,Fetched 1 row(s) in 4.00s
+Query: SELECT COUNT(1) FROM ext_store,12,Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_store_returns,287514,Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_store_sales,2880404,Fetched 1 row(s) in 4.19s
+Query: SELECT COUNT(1) FROM ext_time_dim,86400,Fetched 1 row(s) in 3.78s
+Query: SELECT COUNT(1) FROM ext_warehouse,5,Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_web_page,60,Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_web_returns,71763,Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_web_sales,719384,Fetched 1 row(s) in 4.09s
+Query: SELECT COUNT(1) FROM ext_web_site,30,Fetched 1 row(s) in 3.89s

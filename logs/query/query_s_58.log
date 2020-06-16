@@ -1,0 +1,110 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: with sr_items as
+(select i_item_id item_id,
+sum(sr_return_quantity) sr_item_qty
+from store_returns,
+item,
+date_dim
+where sr_item_sk = i_item_sk
+and   d_date    in
+(select d_date
+from date_dim
+where d_week_seq in
+(select d_week_seq
+from date_dim
+where d_date in ('2000-04-29','2000-09-09','2000-11-02')))
+and   sr_returned_date_sk   = d_date_sk
+group by i_item_id),
+cr_items as
+(select i_item_id item_id,
+sum(cr_return_quantity) cr_item_qty
+from catalog_returns,
+item,
+date_dim
+where cr_item_sk = i_item_sk
+and   d_date    in
+(select d_date
+from date_dim
+where d_week_seq in
+(select d_week_seq
+from date_dim
+where d_date in ('2000-04-29','2000-09-09','2000-11-02')))
+and   cr_returned_date_sk   = d_date_sk
+group by i_item_id),
+wr_items as
+(select i_item_id item_id,
+sum(wr_return_quantity) wr_item_qty
+from web_returns,
+item,
+date_dim
+where wr_item_sk = i_item_sk
+and   d_date    in
+(select d_date
+from date_dim
+where d_week_seq in
+(select d_week_seq
+from date_dim
+where d_date in ('2000-04-29','2000-09-09','2000-11-02')))
+and   wr_returned_date_sk   = d_date_sk
+group by i_item_id)
+select  sr_items.item_id
+,sr_item_qty
+,sr_item_qty/(sr_item_qty+cr_item_qty+wr_item_qty)/3.0 * 100 sr_dev
+,cr_item_qty
+,cr_item_qty/(sr_item_qty+cr_item_qty+wr_item_qty)/3.0 * 100 cr_dev
+,wr_item_qty
+,wr_item_qty/(sr_item_qty+cr_item_qty+wr_item_qty)/3.0 * 100 wr_dev
+,(sr_item_qty+cr_item_qty+wr_item_qty)/3.0 average
+from sr_items
+,cr_items
+,wr_items
+where sr_items.item_id=cr_items.item_id
+and sr_items.item_id=wr_items.item_id
+order by sr_items.item_id
+,sr_item_qty
+limit 100
+Query submitted at: 2020-06-10 02:22:18 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=b2463f4c04ecce1c:81a7a6b700000000
++------------------+-------------+-----------------+-------------+-----------------+-------------+-----------------+-----------+
+| item_id          | sr_item_qty | sr_dev          | cr_item_qty | cr_dev          | wr_item_qty | wr_dev          | average   |
++------------------+-------------+-----------------+-------------+-----------------+-------------+-----------------+-----------+
+| AAAAAAAAANPDAAAA | 3           | 3.571428571429  | 22          | 26.190476190476 | 3           | 3.571428571429  | 9.333333  |
+| AAAAAAAABCGEAAAA | 6           | 5.405405405405  | 20          | 18.018018018018 | 11          | 9.909909909910  | 12.333333 |
+| AAAAAAAABDDAAAAA | 15          | 7.352941176471  | 33          | 16.176470588235 | 20          | 9.803921568627  | 22.666667 |
+| AAAAAAAACEPBAAAA | 16          | 6.349206349206  | 8           | 3.174603174603  | 60          | 23.809523809524 | 28.000000 |
+| AAAAAAAACJACAAAA | 28          | 21.212121212121 | 12          | 9.090909090909  | 4           | 3.030303030303  | 14.666667 |
+| AAAAAAAACKBEAAAA | 19          | 8.119658119658  | 35          | 14.957264957265 | 24          | 10.256410256410 | 26.000000 |
+| AAAAAAAADBGDAAAA | 22          | 4.793028322440  | 68          | 14.814814814815 | 63          | 13.725490196078 | 51.000000 |
+| AAAAAAAADBPDAAAA | 9           | 23.076923076923 | 2           | 5.128205128205  | 2           | 5.128205128205  | 4.333333  |
+| AAAAAAAADEFBAAAA | 21          | 4.458598726115  | 92          | 19.532908704883 | 44          | 9.341825902335  | 52.333333 |
+| AAAAAAAADKAAAAAA | 2           | 0.833333333333  | 52          | 21.666666666667 | 26          | 10.833333333333 | 26.666667 |
+| AAAAAAAAEGOBAAAA | 56          | 12.612612612613 | 91          | 20.495495495496 | 1           | 0.225225225225  | 49.333333 |
+| AAAAAAAAELBAAAAA | 9           | 10.714285714286 | 18          | 21.428571428571 | 1           | 1.190476190476  | 9.333333  |
+| AAAAAAAAGALAAAAA | 11          | 5.472636815920  | 55          | 27.363184079602 | 1           | 0.497512437811  | 22.333333 |
+| AAAAAAAAGBADAAAA | 37          | 9.487179487179  | 64          | 16.410256410256 | 29          | 7.435897435897  | 43.333333 |
+| AAAAAAAAGCKBAAAA | 17          | 8.717948717949  | 18          | 9.230769230769  | 30          | 15.384615384615 | 21.666667 |
+| AAAAAAAAGJNAAAAA | 21          | 26.923076923077 | 1           | 1.282051282051  | 4           | 5.128205128205  | 8.666667  |
+| AAAAAAAAGNCBAAAA | 56          | 21.455938697318 | 30          | 11.494252873563 | 1           | 0.383141762452  | 29.000000 |
+| AAAAAAAAHKNBAAAA | 8           | 14.814814814815 | 9           | 16.666666666667 | 1           | 1.851851851852  | 6.000000  |
+| AAAAAAAAIBGCAAAA | 29          | 8.055555555556  | 85          | 23.611111111111 | 6           | 1.666666666667  | 40.000000 |
+| AAAAAAAAIEEDAAAA | 43          | 13.522012578616 | 39          | 12.264150943396 | 24          | 7.547169811321  | 35.333333 |
+| AAAAAAAAIHJBAAAA | 2           | 3.174603174603  | 13          | 20.634920634921 | 6           | 9.523809523810  | 7.000000  |
+| AAAAAAAAIPPDAAAA | 39          | 9.774436090226  | 7           | 1.754385964912  | 87          | 21.804511278195 | 44.333333 |
+| AAAAAAAAJPEAAAAA | 7           | 3.240740740741  | 45          | 20.833333333333 | 20          | 9.259259259259  | 24.000000 |
+| AAAAAAAAKGLCAAAA | 19          | 5.555555555556  | 79          | 23.099415204678 | 16          | 4.678362573099  | 38.000000 |
+| AAAAAAAAKGMDAAAA | 3           | 4.000000000000  | 11          | 14.666666666667 | 11          | 14.666666666667 | 8.333333  |
+| AAAAAAAAKHCBAAAA | 27          | 10.344827586207 | 26          | 9.961685823755  | 34          | 13.026819923372 | 29.000000 |
+| AAAAAAAAKOMCAAAA | 2           | 1.960784313725  | 11          | 10.784313725490 | 21          | 20.588235294118 | 11.333333 |
+| AAAAAAAALCDDAAAA | 22          | 8.627450980392  | 47          | 18.431372549020 | 16          | 6.274509803922  | 28.333333 |
+| AAAAAAAAMPHDAAAA | 44          | 12.753623188406 | 19          | 5.507246376812  | 52          | 15.072463768116 | 38.333333 |
+| AAAAAAAANBFAAAAA | 83          | 13.973063973064 | 67          | 11.279461279461 | 48          | 8.080808080808  | 66.000000 |
+| AAAAAAAAOCMDAAAA | 45          | 16.853932584270 | 13          | 4.868913857678  | 31          | 11.610486891386 | 29.666667 |
+| AAAAAAAAOEJBAAAA | 24          | 6.153846153846  | 61          | 15.641025641026 | 45          | 11.538461538462 | 43.333333 |
+| AAAAAAAAPDGBAAAA | 40          | 13.888888888889 | 43          | 14.930555555556 | 13          | 4.513888888889  | 32.000000 |
+| AAAAAAAAPKJDAAAA | 12          | 9.090909090909  | 12          | 9.090909090909  | 20          | 15.151515151515 | 14.666667 |
++------------------+-------------+-----------------+-------------+-----------------+-------------+-----------------+-----------+
+Fetched 34 row(s) in 1.09s

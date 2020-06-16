@@ -1,0 +1,153 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: with wss as
+(select d_week_seq,
+ss_store_sk,
+sum(case when (d_day_name='Sunday') then ss_sales_price else null end) sun_sales,
+sum(case when (d_day_name='Monday') then ss_sales_price else null end) mon_sales,
+sum(case when (d_day_name='Tuesday') then ss_sales_price else  null end) tue_sales,
+sum(case when (d_day_name='Wednesday') then ss_sales_price else null end) wed_sales,
+sum(case when (d_day_name='Thursday') then ss_sales_price else null end) thu_sales,
+sum(case when (d_day_name='Friday') then ss_sales_price else null end) fri_sales,
+sum(case when (d_day_name='Saturday') then ss_sales_price else null end) sat_sales
+from store_sales,date_dim
+where d_date_sk = ss_sold_date_sk
+group by d_week_seq,ss_store_sk
+)
+select  s_store_name1,s_store_id1,d_week_seq1
+,sun_sales1/sun_sales2,mon_sales1/mon_sales2
+,tue_sales1/tue_sales2,wed_sales1/wed_sales2,thu_sales1/thu_sales2
+,fri_sales1/fri_sales2,sat_sales1/sat_sales2
+from
+(select s_store_name s_store_name1,wss.d_week_seq d_week_seq1
+,s_store_id s_store_id1,sun_sales sun_sales1
+,mon_sales mon_sales1,tue_sales tue_sales1
+,wed_sales wed_sales1,thu_sales thu_sales1
+,fri_sales fri_sales1,sat_sales sat_sales1
+from wss,store,date_dim d
+where d.d_week_seq = wss.d_week_seq and
+ss_store_sk = s_store_sk and
+d_month_seq between 1206 and 1206 + 11) y,
+(select s_store_name s_store_name2,wss.d_week_seq d_week_seq2
+,s_store_id s_store_id2,sun_sales sun_sales2
+,mon_sales mon_sales2,tue_sales tue_sales2
+,wed_sales wed_sales2,thu_sales thu_sales2
+,fri_sales fri_sales2,sat_sales sat_sales2
+from wss,store,date_dim d
+where d.d_week_seq = wss.d_week_seq and
+ss_store_sk = s_store_sk and
+d_month_seq between 1206+ 12 and 1206 + 23) x
+where s_store_id1=s_store_id2
+and d_week_seq1=d_week_seq2-52
+order by s_store_name1,s_store_id1,d_week_seq1
+limit 100
+Query submitted at: 2020-06-10 02:21:20 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=3c4d357bf1aa9de7:bffa975200000000
++---------------+------------------+-------------+-------------------------+-------------------------+-------------------------+-------------------------+-------------------------+-------------------------+-------------------------+
+| s_store_name1 | s_store_id1      | d_week_seq1 | sun_sales1 / sun_sales2 | mon_sales1 / mon_sales2 | tue_sales1 / tue_sales2 | wed_sales1 / wed_sales2 | thu_sales1 / thu_sales2 | fri_sales1 / fri_sales2 | sat_sales1 / sat_sales2 |
++---------------+------------------+-------------+-------------------------+-------------------------+-------------------------+-------------------------+-------------------------+-------------------------+-------------------------+
+| able          | AAAAAAAACAAAAAAA | 5244        | NULL                    | NULL                    | NULL                    | 0.476810                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5244        | NULL                    | NULL                    | NULL                    | 0.476810                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5244        | NULL                    | NULL                    | NULL                    | 0.476810                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5244        | NULL                    | NULL                    | NULL                    | 0.476810                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5244        | NULL                    | NULL                    | NULL                    | 0.476810                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5244        | NULL                    | NULL                    | NULL                    | 0.476810                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5245        | NULL                    | NULL                    | NULL                    | 0.814523                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
+| able          | AAAAAAAACAAAAAAA | 5246        | NULL                    | NULL                    | NULL                    | 0.728507                | NULL                    | NULL                    | NULL                    |
++---------------+------------------+-------------+-------------------------+-------------------------+-------------------------+-------------------------+-------------------------+-------------------------+-------------------------+
+Fetched 100 row(s) in 0.93s

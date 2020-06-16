@@ -1,0 +1,130 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: SELECT COUNT(1) FROM ext_call_center
+Query submitted at: 2020-06-10 02:12:52 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=174f7e206f35fef8:7a77871a00000000
+6
+Fetched 1 row(s) in 3.26s
+Query: SELECT COUNT(1) FROM ext_catalog_page
+Query submitted at: 2020-06-10 02:12:56 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=ff470de71362666e:4fa325cb00000000
+11718
+Fetched 1 row(s) in 4.00s
+Query: SELECT COUNT(1) FROM ext_catalog_returns
+Query submitted at: 2020-06-10 02:13:00 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=fc437596399779b2:a35b084600000000
+144067
+Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_catalog_sales
+Query submitted at: 2020-06-10 02:13:04 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=1e4ab7fdbd8081c1:4e49fd3500000000
+1441548
+Fetched 1 row(s) in 4.09s
+Query: SELECT COUNT(1) FROM ext_customer
+Query submitted at: 2020-06-10 02:13:08 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=6f405c639722c6de:45d98f4c00000000
+100000
+Fetched 1 row(s) in 3.89s
+Query: SELECT COUNT(1) FROM ext_customer_address
+Query submitted at: 2020-06-10 02:13:12 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=a745005adb0ae038:dc0a6d1a00000000
+50000
+Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_customer_demographics
+Query submitted at: 2020-06-10 02:13:16 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=fd4bbb27c7a1b5b6:4973669100000000
+1920800
+Fetched 1 row(s) in 4.09s
+Query: SELECT COUNT(1) FROM ext_date_dim
+Query submitted at: 2020-06-10 02:13:20 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=494c3a9c3b64edfc:cd9ac9ca00000000
+73049
+Fetched 1 row(s) in 3.89s
+Query: SELECT COUNT(1) FROM ext_dbgen_version
+Query submitted at: 2020-06-10 02:13:24 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=4640fc216b110087:450d097500000000
+1
+Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_household_demographics
+Query submitted at: 2020-06-10 02:13:28 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=8f4f3d2eaf75a4c7:129e17e100000000
+7200
+Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_income_band
+Query submitted at: 2020-06-10 02:13:32 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=6d4b868862c1d8ea:bb71c5d600000000
+20
+Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_inventory
+Query submitted at: 2020-06-10 02:13:36 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=1740ba8c1e83571d:642c62ea00000000
+11745000
+Fetched 1 row(s) in 4.19s
+Query: SELECT COUNT(1) FROM ext_item
+Query submitted at: 2020-06-10 02:13:40 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=154d6c368e6b4d5c:37a2090b00000000
+18000
+Fetched 1 row(s) in 3.79s
+Query: SELECT COUNT(1) FROM ext_promotion
+Query submitted at: 2020-06-10 02:13:44 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=5a45a92e50ba92e4:cb097c1000000000
+300
+Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_reason
+Query submitted at: 2020-06-10 02:13:48 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=2140f5f38ed75793:851b192600000000
+35
+Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_ship_mode
+Query submitted at: 2020-06-10 02:13:52 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=884c6f8de8e10f6f:58d1aab000000000
+20
+Fetched 1 row(s) in 4.00s
+Query: SELECT COUNT(1) FROM ext_store
+Query submitted at: 2020-06-10 02:13:56 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=024c55d71d70eed3:abd4c6ec00000000
+12
+Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_store_returns
+Query submitted at: 2020-06-10 02:14:00 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=584d816ef17a8295:ddf75b8600000000
+287514
+Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_store_sales
+Query submitted at: 2020-06-10 02:14:04 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=514790463ef22b6e:f71cba2700000000
+2880404
+Fetched 1 row(s) in 4.19s
+Query: SELECT COUNT(1) FROM ext_time_dim
+Query submitted at: 2020-06-10 02:14:08 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=d14f83dc45ab65d7:6beeac3400000000
+86400
+Fetched 1 row(s) in 3.78s
+Query: SELECT COUNT(1) FROM ext_warehouse
+Query submitted at: 2020-06-10 02:14:12 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=c34e060487e921df:20a9974500000000
+5
+Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_web_page
+Query submitted at: 2020-06-10 02:14:16 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=6444e4ec4bc74448:16b4336d00000000
+60
+Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_web_returns
+Query submitted at: 2020-06-10 02:14:20 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=344ea44de052c2f1:1256f44900000000
+71763
+Fetched 1 row(s) in 3.99s
+Query: SELECT COUNT(1) FROM ext_web_sales
+Query submitted at: 2020-06-10 02:14:24 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=a04f40a84d081350:6e45367600000000
+719384
+Fetched 1 row(s) in 4.09s
+Query: SELECT COUNT(1) FROM ext_web_site
+Query submitted at: 2020-06-10 02:14:28 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=5f469ed4835b4ec3:b9a7b3e500000000
+30
+Fetched 1 row(s) in 3.89s

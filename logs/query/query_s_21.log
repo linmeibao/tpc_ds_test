@@ -1,0 +1,63 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: select *
+from (select avg(ss_list_price) B1_LP
+,count(ss_list_price) B1_CNT
+,count(distinct ss_list_price) B1_CNTD
+from store_sales
+where ss_quantity between 0 and 5
+and (ss_list_price between 28 and 28+10
+or ss_coupon_amt between 12573 and 12573+1000
+or ss_wholesale_cost between 33 and 33+20)) B1,
+(select avg(ss_list_price) B2_LP
+,count(ss_list_price) B2_CNT
+,count(distinct ss_list_price) B2_CNTD
+from store_sales
+where ss_quantity between 6 and 10
+and (ss_list_price between 143 and 143+10
+or ss_coupon_amt between 5562 and 5562+1000
+or ss_wholesale_cost between 45 and 45+20)) B2,
+(select avg(ss_list_price) B3_LP
+,count(ss_list_price) B3_CNT
+,count(distinct ss_list_price) B3_CNTD
+from store_sales
+where ss_quantity between 11 and 15
+and (ss_list_price between 159 and 159+10
+or ss_coupon_amt between 2807 and 2807+1000
+or ss_wholesale_cost between 24 and 24+20)) B3,
+(select avg(ss_list_price) B4_LP
+,count(ss_list_price) B4_CNT
+,count(distinct ss_list_price) B4_CNTD
+from store_sales
+where ss_quantity between 16 and 20
+and (ss_list_price between 24 and 24+10
+or ss_coupon_amt between 3706 and 3706+1000
+or ss_wholesale_cost between 46 and 46+20)) B4,
+(select avg(ss_list_price) B5_LP
+,count(ss_list_price) B5_CNT
+,count(distinct ss_list_price) B5_CNTD
+from store_sales
+where ss_quantity between 21 and 25
+and (ss_list_price between 76 and 76+10
+or ss_coupon_amt between 2096 and 2096+1000
+or ss_wholesale_cost between 50 and 50+20)) B5,
+(select avg(ss_list_price) B6_LP
+,count(ss_list_price) B6_CNT
+,count(distinct ss_list_price) B6_CNTD
+from store_sales
+where ss_quantity between 26 and 30
+and (ss_list_price between 169 and 169+10
+or ss_coupon_amt between 10672 and 10672+1000
+or ss_wholesale_cost between 58 and 58+20)) B6
+limit 100
+Query submitted at: 2020-06-10 02:21:23 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=03472315742ca7e5:360bd1e700000000
++-----------+--------+---------+-----------+--------+---------+-----------+--------+---------+-----------+--------+---------+-----------+--------+---------+------------+--------+---------+
+| b1_lp     | b1_cnt | b1_cntd | b2_lp     | b2_cnt | b2_cntd | b3_lp     | b3_cnt | b3_cntd | b4_lp     | b4_cnt | b4_cntd | b5_lp     | b5_cnt | b5_cntd | b6_lp      | b6_cnt | b6_cntd |
++-----------+--------+---------+-----------+--------+---------+-----------+--------+---------+-----------+--------+---------+-----------+--------+---------+------------+--------+---------+
+| 56.566060 | 36016  | 7003    | 91.124361 | 31221  | 8207    | 61.208578 | 29157  | 6486    | 69.680907 | 36077  | 8287    | 89.216954 | 32180  | 7912    | 106.805840 | 28495  | 9043    |
++-----------+--------+---------+-----------+--------+---------+-----------+--------+---------+-----------+--------+---------+-----------+--------+---------+------------+--------+---------+
+Fetched 1 row(s) in 0.46s

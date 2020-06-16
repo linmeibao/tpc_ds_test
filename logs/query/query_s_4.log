@@ -1,0 +1,51 @@
+Starting Impala Shell without Kerberos authentication
+Opened TCP connection to test4:21000
+Connected to test4:21000
+Server version: impalad version 3.2.0-cdh6.3.2 RELEASE (build 1bb9836227301b839a32c6bc230e35439d5984ac)
+Query: use tpc_test
+Query: with inv as
+(select w_warehouse_name,w_warehouse_sk,i_item_sk,d_moy
+,stdev,mean, case mean when 0 then null else stdev/mean end cov
+from(select w_warehouse_name,w_warehouse_sk,i_item_sk,d_moy
+,stddev_samp(inv_quantity_on_hand) stdev,avg(inv_quantity_on_hand) mean
+from inventory
+,item
+,warehouse
+,date_dim
+where inv_item_sk = i_item_sk
+and inv_warehouse_sk = w_warehouse_sk
+and inv_date_sk = d_date_sk
+and d_year =2001
+group by w_warehouse_name,w_warehouse_sk,i_item_sk,d_moy) foo
+where case mean when 0 then 0 else stdev/mean end > 1)
+select inv1.w_warehouse_sk,inv1.i_item_sk,inv1.d_moy,inv1.mean, inv1.cov
+,inv2.w_warehouse_sk,inv2.i_item_sk,inv2.d_moy,inv2.mean, inv2.cov
+from inv inv1,inv inv2
+where inv1.i_item_sk = inv2.i_item_sk
+and inv1.w_warehouse_sk =  inv2.w_warehouse_sk
+and inv1.d_moy=1
+and inv2.d_moy=1+1
+and inv1.cov > 1.5
+order by inv1.w_warehouse_sk,inv1.i_item_sk,inv1.d_moy,inv1.mean,inv1.cov
+,inv2.d_moy,inv2.mean, inv2.cov
+Query submitted at: 2020-06-10 02:22:04 (Coordinator: http://test4:25000)
+Query progress can be monitored at: http://test4:25000/query_plan?query_id=8f40112a5edeb3ca:0da7f43e00000000
++----------------+-----------+-------+-------------------+-------------------+----------------+-----------+-------+-------------------+-------------------+
+| w_warehouse_sk | i_item_sk | d_moy | mean              | cov               | w_warehouse_sk | i_item_sk | d_moy | mean              | cov               |
++----------------+-----------+-------+-------------------+-------------------+----------------+-----------+-------+-------------------+-------------------+
+| 1              | 1569      | 1     | 212               | 1.630213519639535 | 1              | 1569      | 2     | 239.25            | 1.264151326780056 |
+| 1              | 5627      | 1     | 282.75            | 1.565703236635989 | 1              | 5627      | 2     | 297.5             | 1.208428684143068 |
+| 1              | 7999      | 1     | 166.25            | 1.792423171084622 | 1              | 7999      | 2     | 375.3333333333333 | 1.008092263550718 |
+| 1              | 8611      | 1     | 300.5             | 1.519154518414795 | 1              | 8611      | 2     | 243.75            | 1.234212278096043 |
+| 1              | 15345     | 1     | 148.5             | 1.529578403579402 | 1              | 15345     | 2     | 246.5             | 1.508798774723153 |
+| 2              | 71        | 1     | 221.5             | 1.563974108334745 | 2              | 71        | 2     | 309               | 1.491705789588568 |
+| 2              | 6103      | 1     | 194.3333333333333 | 1.516067017930739 | 2              | 6103      | 2     | 158.5             | 1.274369863616506 |
+| 2              | 6489      | 1     | 268               | 1.695637236843227 | 2              | 6489      | 2     | 389               | 1.410578051929977 |
+| 2              | 15839     | 1     | 353               | 1.506368443754291 | 2              | 15839     | 2     | 255.5             | 1.23623931828941  |
+| 3              | 7207      | 1     | 329.6666666666667 | 1.595448216072039 | 3              | 7207      | 2     | 414.5             | 1.017919707908937 |
+| 3              | 10547     | 1     | 182.3333333333333 | 1.532564151486904 | 3              | 10547     | 2     | 320.25            | 1.302441844373152 |
+| 3              | 12867     | 1     | 278.25            | 1.640380012394735 | 3              | 12867     | 2     | 350.75            | 1.20069333217428  |
+| 4              | 947       | 1     | 247.5             | 1.693318181348697 | 4              | 947       | 2     | 203.3333333333333 | 1.205433145161931 |
+| 5              | 3137      | 1     | 271.25            | 1.575453220592864 | 5              | 3137      | 2     | 380               | 1.083420338860032 |
++----------------+-----------+-------+-------------------+-------------------+----------------+-----------+-------+-------------------+-------------------+
+Fetched 14 row(s) in 0.97s
